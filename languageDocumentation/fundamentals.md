@@ -43,7 +43,12 @@ An expression will finish prep-phase once all nested prep-grade expressions are 
 
 When a statement block is in prep-phase, prep-grade variables in the block are deeply immutable. Once the statement block enters flow-phase, the prep-grade variables may become mutable.
 
-Flow-grade expressions are able to directly read items stored in both prep-grade and flow-grade variables. Prep-grade expressions can directly read prep-grade variables, but can only reference flow-grade variables in closures.
+Variable access may be restricted depending on the evaluation grade of the variable and the evaluation phase of the variable's parent block:
+
+* Prep-grade variables in prep-phase blocks can be directly read.
+* Flow-grade variables in prep-phase blocks can only be referenced by closures.
+* Prep-grade variables in flow-phase blocks can be directly written and read.
+* Flow-grade variables in flow-phase blocks can be directly written and read.
 
 Within an application, prep-grade variables may be initialized in any order, and prep-grade expressions may be evaluated in any order. If an operand of an expression is not yet known, the interpreter will defer evaluation of the expression until the operand is known.
 
