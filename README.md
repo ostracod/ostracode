@@ -25,6 +25,7 @@ OstraCode has the following design goals:
 To learn more about OstraCode, please consult these pages:
 
 * [Fundamentals](languageDocumentation/fundamentals.md)
+* [Syntax](languageDocumentation/syntax.md)
 * TODO: Add more sections.
 
 
