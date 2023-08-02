@@ -26,6 +26,7 @@ To learn more about OstraCode, please consult these pages:
 
 * [Fundamentals](languageDocumentation/fundamentals.md)
 * [Syntax](languageDocumentation/syntax.md)
+* [Operators and Specials](languageDocumentation/operators.md)
 * TODO: Add more sections.
 
 
