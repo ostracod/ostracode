@@ -28,6 +28,7 @@ To learn more about OstraCode, please consult these pages:
 * [Syntax](languageDocumentation/syntax.md)
 * [Operators and Specials](languageDocumentation/operators.md)
 * [Statements](languageDocumentation/statements.md)
+* [Built-In Constants](languageDocumentation/builtIn.md)
 * TODO: Add more sections.
 
 

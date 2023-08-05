@@ -14,13 +14,17 @@ Supose that `$num1` and `$num2` are expressions with type `numT`. The type of th
 * `$num1 / $num2` = Quotient when dividing `$num1` by `$num2`
 * `$num1 % $num2` = Remainder when dividing `$num1` by `$num2`
 * `$num1 ** $num2` = `$num1` raised to the power of `$num2`
-* `~$num1` = Bitwise NOT of `$num1`
-* `$num1 | $num2` = Bitwise OR of `$num1` and `$num2`
-* `$num1 & $num2` = Bitwise AND of `$num1` and `$num2`
-* `$num1 ^ $num2` = Bitwise XOR of `$num1` and `$num2`
-* `$num1 #sl $num2` = `$num1` shifted left by `$num2` bits
-* `$num1 #sr $num2` = `$num1` shifted right by `$num2` bits
-* `$num1 #srz $num2` = `$num1` shifted right by `$num2` bits with zero fill
+
+Supose that `$int1` and `$int2` are expressions with type `intT`. The type of the following expressions is also `intT`:
+
+* `$int1 // $int2` = Integer quotient when dividing `$int1` by `$int2`
+* `~$int1` = Bitwise NOT of `$int1`
+* `$int1 | $int2` = Bitwise OR of `$int1` and `$int2`
+* `$int1 & $int2` = Bitwise AND of `$int1` and `$int2`
+* `$int1 ^ $int2` = Bitwise XOR of `$int1` and `$int2`
+* `$int1 #sl $int2` = `$int1` shifted left by `$int2` bits
+* `$int1 #sr $int2` = `$int1` shifted right by `$int2` bits
+* `$int1 #srz $int2` = `$int1` shifted right by `$int2` bits with zero fill
 
 The plus operator (`+`) may also be used for string concatenation. The expression `$str1 + $str2` returns `$str1` concatenated with `$str2`. `$str1` and `$str2` are expressions with type `(*ToStringT)`, and the type of `$str1 + $str2` is `strT`.
 
