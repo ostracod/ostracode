@@ -52,9 +52,11 @@ OstraCode has the following member access operators:
 * `$item.$identifier` = Field of feature in `$item` with name `$identifier`
     * `$item` is an expression with type `itemT`
     * `$identifier` is an identifier
+    * The type of `$item.$identifier` is the type of the feature field
 * `$module@$identifier` = Member of `$module` with name `$identifier`
     * `$module` is an expression with type `moduleT`
     * `$identifier` is an identifier
+    * The type of `$module@$identifier` is the type of the module member
 * `$collection@$identifier` = Member of `$collection` with name `$identifier`
     * `$collection` is an expression with type `(*SubscriptGetT+:(strT, $memberType))`
     * `$identifier` is an identifier
@@ -222,14 +224,6 @@ genericT [$attrs] ($type)
 ```
 
 Returns `$type` as a generic type which may be qualified with arguments described by `$attrs`. The argument variables of the generic are flow-grade. If `($type)` is excluded, then `genericT` returns `itemT` as a generic type.
-
-### Module Special:
-
-```
-moduleT [$attrs]
-```
-
-Creates a module type whose member types are described by `$attrs`.
 
 ### Discern Special:
 
