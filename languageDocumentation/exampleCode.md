@@ -84,6 +84,69 @@ entryPoint <func {
 }>
 ```
 
+## Evaluation Grades
+
+The example below demonstrates initialization order of prep-grade and flow-grade variables:
+
+```
+// Does not throw an error.
+prep w1 = <10>
+prep w2 = <w1>
+
+// Does not throw an error, because prep-grade initialization order is flexible,
+// and evaluation of `<x2>` will be deferred until `x2` is known.
+prep x1 = <x2>
+prep x2 = <20>
+
+entryPoint <func {
+    
+    // Does not throw an error.
+    var y1 = (30)
+    var y2 = (y1)
+    
+    // Throws an error during flow-phase, because `z2` is only initialized when
+    // control flow reaches the declaration statement of `z2`.
+    var z1 = (z2)
+    var z2 = (40)
+}>
+```
+
+The example below demonstrates variable access restrictions during prep-phase and flow-phase:
+
+```
+entryPoint <func {
+    
+    prep myPrepVar = <100>
+    var myFlowVar = (101)
+    
+    // Does not throw an error, because prep-grade variables are readable during prep-phase.
+    prep int3 = <myPrepVar>
+    // Throws an error, because flow-grade variables cannot be directly
+    // read during prep-phase.
+    prep int4 = <myFlowVar>
+    // Does not throw an error, because prep-grade and flow-grade variables are
+    // readable during flow-phase.
+    flow int5 = (myPrepVar + myFlowVar)
+    
+    // Does not throw an error, because flow-grade variables may be referenced by
+    // closures during prep-phase.
+    prep myFunc = <func [returns <intT>] {
+        return (myFlowVar)
+    }>
+    // Throws an error, because `myFunc` attempts to read `myFlowVar` during prep-phase.
+    prep result1 = <myFunc()>
+    // Does not throw an error.
+    flow result2 = (myFunc())
+    
+    // Throws an error, because prep-grade variables are immutable during prep-phase.
+    <myPrepVar += 1>
+    // Does not throw an error, because prep-grade variables are mutable during flow-phase.
+    (myPrepVar += 1)
+    // Does not throw an error, because flow-grade variables are mutable.
+    (myFlowVar += 1)
+}>
+```
+
 ## Type Wrangling
 
 The example below declares a function which creates dictionary types:
