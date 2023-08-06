@@ -10,13 +10,13 @@ OstraCode has the following behavior statements:
 ### Variable Statements:
 
 ```
-prepVar $name <$type> [$attrs] = <$initItem>
+prep $name <$type> [$attrs] = <$initItem>
 ```
 
 Declares a prep-grade variable with name identifier `$name`, constraint type `$type`, and initialization item `$initItem`. If `<$type>` is excluded, then the constraint type of the variable will be the type of `$initItem`.
 
 ```
-flowVar $name <$type> [$attrs] = ($initItem)
+var $name <$type> [$attrs] = ($initItem)
 ```
 
 Declares a flow-grade variable with name identifier `$name`, constraint type `$type`, and initialization item `$initItem`. If `<$type>` is excluded, then the constraint type of the variable will be the type of `$initItem`. If `= ($initItem)` is excluded, then the initial item of the variable will be `null`. If both `<$type>` and `= ($initItem)` are excluded, then the constraint type of the variable will be `itemT`.

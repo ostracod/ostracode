@@ -26,8 +26,6 @@ Supose that `$int1` and `$int2` are expressions with type `intT`. The type of th
 * `$int1 #sr $int2` = `$int1` shifted right by `$int2` bits
 * `$int1 #srz $int2` = `$int1` shifted right by `$int2` bits with zero fill
 
-The plus operator (`+`) may also be used for string concatenation. The expression `$str1 + $str2` returns `$str1` concatenated with `$str2`. `$str1` and `$str2` are expressions with type `(*ToStringT)`, and the type of `$str1 + $str2` is `strT`.
-
 Supose that `$num1` and `$num2` are expressions with type `numT`. The type of the following expressions is `boolT`:
 
 * `$num1 #lt $num2` = Whether `$num1` is less than `$num2`
@@ -50,6 +48,8 @@ Supose that `$bool1` and `$bool2` are expressions with type `boolT`. The type of
 * `$bool1 || $bool2` = Logical OR of `$bool1` and `$bool2`
 * `$bool1 && $bool2` = Logical AND of `$bool1` and `$bool2`
 * `$bool1 ^^ $bool2` = Logical XOR of `$bool1` and `$bool2`
+
+Suppose that `$str1` and `$str2` are expressions with type `(*ToStringT)`. The type of the expression `$str1 ; $str2` is also `strT`, and returns the concatenation of `$str1` and `$str2`.
 
 OstraCode has the following member access operators:
 
@@ -100,10 +100,13 @@ Generic items may be qualified with the `+:` operator:
 
 The expression `$ref = $item` assigns the return item of expression `$item` to reference `$ref`. The type of `$item` must conform to the type of `$ref`. `=` may be combined with various binary operators to assign the result of an operation between `$ref` and `$expr`. For example, `$ref += $item` assigns `$ref + $item` to `$ref`. The list of all composite assignment operators is below:
 
-* `+=`, `-=`, `*=`, `/=`, `%=`, and `**=` perform assignment with arithmetic operation.
+* `+=`, `-=`, `*=`, `/=`, `//=`, `%=`, and `**=` perform assignment with arithmetic operation.
 * `|=`, `&=`, and `^=` perform assignment with bitwise operation.
 * `||=`, `&&=`, and `^^=` perform assignment with logical operation.
 * `#sl=`, `#sr=`, and `#srz=` perform assignment with bitshift.
+* `;=` performs assignment with string concatenation.
+
+The return type of all assignment operators is `nullT`.
 
 ## Specials
 

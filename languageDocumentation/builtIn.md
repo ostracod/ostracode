@@ -31,7 +31,7 @@ OstraCode has the following built-in interfaces:
 ### To String Interface:
 
 ```
-prepVar ToStringT = <interfaceT [
+prep ToStringT = <interfaceT [
     sharedFields [
         toString (methodT [
             returns (strT)
@@ -40,12 +40,12 @@ prepVar ToStringT = <interfaceT [
 ]>
 ```
 
-The `toString` method converts the parent item to a string. Every non-object item implements `ToStringT`. The `ToStringT` interface interoperates with the concatenation operator (`+`).
+The `toString` method converts the parent item to a string. Every non-object item implements `ToStringT`. The `ToStringT` interface interoperates with the string concatenation operator (`;`).
 
 ### Length Interface:
 
 ```
-prepVar LengthT = <interfaceT [
+prep LengthT = <interfaceT [
     itemFields [
         length (intT) [public, vis (2)]
     ]
@@ -57,7 +57,7 @@ The `length` field stores the number of members in the parent item. Strings, lis
 ### Conforms To Interface:
 
 ```
-prepVar ConformsToT = <interfaceT [
+prep ConformsToT = <interfaceT [
     sharedFields [
         conformsTo (methodT [
             args [type (typeT)]
@@ -72,7 +72,7 @@ The `conformsTo` method determines whether the parent item conforms to the given
 ### Subscript Get Interface:
 
 ```
-prepVar SubscriptGetT = <genericT [
+prep SubscriptGetT = <genericT [
     args [subscriptT <typeT>, memberT = (itemT)]
 ] (interfaceT [
     sharedFields [
@@ -89,7 +89,7 @@ The `getMember` method retrieves the member located at `subscript`. Strings, lis
 ### Subscript Set Interface:
 
 ```
-prepVar SubscriptSetT = <genericT [
+prep SubscriptSetT = <genericT [
     args [subscriptT <typeT>, memberT = (itemT)]
 ] (interfaceT [
     sharedFields [
@@ -105,7 +105,7 @@ The `setMember` method modifies the member located at `subscript`. Lists and dic
 ### Subscript Delete Interface:
 
 ```
-prepVar SubscriptDeleteT = <genericT [
+prep SubscriptDeleteT = <genericT [
     args [subscriptT <typeT>]
 ] (interfaceT [
     sharedFields [
@@ -121,7 +121,7 @@ The `deleteMember` method deletes the member located at `subscript`. Lists and d
 ### Iterator Interface:
 
 ```
-prepVar IteratorT = <genericT [
+prep IteratorT = <genericT [
     args [memberT = (itemT)]
 ] (interfaceT [
     sharedFields [
@@ -140,7 +140,7 @@ The `getNext` method retrieves the next member in the iteration. The `isFinished
 ### Iterable Interface:
 
 ```
-prepVar IterableT = <genericT [
+prep IterableT = <genericT [
     args [memberT = (itemT)]
 ] (interfaceT [
     sharedFields [
@@ -156,7 +156,7 @@ The `createIterator` method creates a new iterator which iterates over members i
 ### Error Message Interface:
 
 ```
-prepVar ErrorMessageT = <interfaceT [
+prep ErrorMessageT = <interfaceT [
     itemFields [
         message (strT) [public, vis (2)]
     ]

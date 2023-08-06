@@ -11,7 +11,7 @@ In OstraCode, each expression is associated with an "evaluation grade". The eval
 * Flow-grade expressions are evaluated when control flow reaches the expressions.
 * Never-grade expressions are never evaluated. Instead, the interpreter may derive type information from never-grade expressions.
 
-In an analagous fashion, each variable is also associated with an evaluation grade. The evaluation grade of a variable is determined by the first keyword of the variable's declaration statement (`prepVar` or `flowVar`). Evaluation grade influences the order in which variables are initialized:
+In an analagous fashion, each variable is also associated with an evaluation grade. The evaluation grade of a variable is determined by the first keyword of the variable's declaration statement (`prep` or `var`). Evaluation grade influences the order in which variables are initialized:
 
 * Prep-grade variables are initialized in advance of other variables in their parent block.
 * Flow-grade variables are initialized when control flow reaches their declaration statements.
