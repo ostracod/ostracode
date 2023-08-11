@@ -263,19 +263,10 @@ fields [$fields]
 Valid contexts:
 
 * `dict` and `dictT` specials
-
-Declares the fields in the parent dictionary.
-
-```
-itemFields [$fields]
-```
-
-Valid contexts:
-
 * `interfaceT` special
 * `feature` and `featureT` specials
 
-Declares fields which are associated with the parent factor. The fields are stored in each item which includes the factor.
+Declares fields which are stored in each instance of the parent dictionary or factor.
 
 ```
 sharedFields [$fields]
@@ -286,7 +277,7 @@ Valid contexts:
 * `interfaceT` special
 * `feature` and `featureT` specials
 
-Declares fields which are associated with the parent factor. The fields are shared between all items which include the factor.
+Declares fields which are shared between all instances of the parent factor.
 
 ### Field Statements:
 
@@ -296,8 +287,8 @@ $name <$type> [$attrs] = ($initItem)
 
 Valid contexts:
 
-* `fields` statement in `dict` special
-* `itemFields` and `sharedFields` statements in `feature` special
+* `fields` statement in `dict` or `feature` specials
+* `sharedFields` statement in `feature` special
 
 Declares a field with name identifier `$name`, constraint type `$type`, and initialization item `$initItem`. If `<$type>` is excluded, then the constraint type of the field will be the type of `$initItem`. If `= ($initItem)` is excluded, then the initial item of the field will be `null`. If both `<$type>` and `= ($initItem)` are excluded, then the constraint type of the field will be `itemT`.
 
@@ -318,7 +309,7 @@ $name ($type) [$attrs]
 Valid contexts:
 
 * `fields` statement in `dictT` special:
-* `itemFields` and `sharedFields` statements in one of the following contexts:
+* `fields` and `sharedFields` statements in one of the following contexts:
     * `interfaceT` special
     * `featureT` special
 

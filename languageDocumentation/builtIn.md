@@ -46,7 +46,7 @@ The `toString` method converts the parent item to a string. Every non-object ite
 
 ```
 prep LengthT = <interfaceT [
-    itemFields [
+    fields [
         length (intT) [public, vis (2)]
     ]
 ]>
@@ -157,7 +157,7 @@ The `createIterator` method creates a new iterator which iterates over members i
 
 ```
 prep ErrorMessageT = <interfaceT [
-    itemFields [
+    fields [
         message (strT) [public, vis (2)]
     ]
 ]>
