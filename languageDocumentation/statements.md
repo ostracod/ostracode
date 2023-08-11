@@ -87,13 +87,13 @@ Stops evaluation of the parent function, and returns item `$item`. If `($item)` 
 try {$behavior1} catch $name {$behavior2} finally {$behavior3}
 ```
 
-Attempts to evaluate `$behavior1`. If `$behavior1` throws an error, the error will be stored in a flow-grade variable with name identifier `$name`, and `$behavior2` will be evaluated. The constraint type of the variable is `<*?Error>`. Regardless of whether any error occurred, `$behavior3` will be evaluated. Either `catch $name {$behavior2}` or `finally {$behavior3}` may be excluded, but not both.
+Attempts to evaluate `$behavior1`. If `$behavior1` throws an error, the error will be stored in a flow-grade variable with name identifier `$name`, and `$behavior2` will be evaluated. The constraint type of the variable is `(*ErrorT)`. Regardless of whether any error occurred, `$behavior3` will be evaluated. Either `catch $name {$behavior2}` or `finally {$behavior3}` may be excluded, but not both.
 
 ```
 throw ($error)
 ```
 
-Throws error `$error` which will be handled by a `try` statement. The type of `$error` must conform to `<*?Error>`.
+Throws error `$error` which will be handled by a `try` statement. The type of `$error` must conform to `(*ErrorT)`.
 
 ### Entry Point Statement:
 

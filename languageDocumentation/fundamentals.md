@@ -85,6 +85,5 @@ Data types may be categorized into the following supertypes:
 * `valueT` is the type of a value. Items with type `valueT` may not be used as variable constraint types.
 * `numT` is the type of a number. `numT` is a supertype of `intT` and `floatT`.
 * `factorT` is the type of a factor. `factorT` is a supertype of `interfaceT`, `featureT`, and `bundleT`.
-* `genericT` is the type of an item which may be qualified with one or more arguments.
 
 

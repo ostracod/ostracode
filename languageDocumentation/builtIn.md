@@ -153,27 +153,36 @@ prep IterableT = <genericT [
 
 The `createIterator` method creates a new iterator which iterates over members in the parent item. Strings, lists, and dictionaries implement `IterableT`. The `IterableT` interface interoperates with the `for` statement.
 
-### Error Message Interface:
+### Base Error Interface:
 
 ```
-prep ErrorMessageT = <interfaceT [
+prep BaseErrorT = <interfaceT [
     fields [
         message (strT) [public, vis (2)]
+        stackTrace (*StackTraceT) [public, vis (2)]
     ]
 ]>
 ```
 
-The `message` field stores an error message. The `Error` factor implements `ErrorMessageT`.
+The `message` field stores an error message, and the `stackTrace` field stores a stack trace from when the error was thrown. The `ErrorT` factor type includes `BaseErrorT`. The `BaseErrorT` interface interoperates with the `throw` statement.
 
 ## Built-In Factors
 
 OstraCode has the following built-in factors:
 
-### Error Factor:
+### Stack Trace Factor:
 
-`Error` stores an error. `Error` implements the `ToStringT` and `ErrorMessageT` interfaces. `Error` also provides the following methods:
+The `StackTraceT` factor type represents a stack trace, and includes `ToStringT`. In the future, `StackTraceT` may include more feature types.
 
-* `$error.init($message)` initializes the error with string message `$message`.
+### Error Factors:
+
+The `BaseError` factor implements `BaseErrorT`, and provides the following additional fields:
+
+* `$baseError.init($message)` initializes the error with string message `$message`.
+
+The `ErrorT` factor type includes `BaseErrorT` and `ToStringT`. All errors thrown by `throw` statements and caught by `try` statements conform to `ErrorT`.
+
+The `Error` factor implements `ErrorT`, including `BaseError` and an implementation of `ToStringT`.
 
 ## Built-In Modules
 

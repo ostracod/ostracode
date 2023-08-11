@@ -90,11 +90,11 @@ OstraCode has the following type operators:
 Generic items may be qualified with the `+:` operator:
 
 * `$generic+:<$args>` = Qualification of `$generic` with `$args`
-    * `$generic` is an expression with type `genericT`
+    * `$generic` is an expression with type `genericT (itemT)`
     * `<$args>` is a sequence of expressions with type `itemT`
     * The type of `$generic+:<$args>` depends on the generic definition of `$generic` and the items returned by `<$args>`
 * `$type+:($args)` = Qualification of `$type` with `$args`
-    * `$type` is an expression with type `<?genericT>`
+    * `$type` is an expression with type `<?genericT (itemT)>`
     * `($args)` is a sequence of expressions with type `itemT`
     * The type of `$type+:($args)` depends on the generic definition of `$type`
 
@@ -230,7 +230,7 @@ Returns `$item` as a generic item which may be qualified with arguments describe
 genericT [$attrs] ($type)
 ```
 
-Returns `$type` as a generic type which may be qualified with arguments described by `$attrs`. The argument variables of the generic are flow-grade. If `($type)` is excluded, then `genericT` returns `itemT` as a generic type.
+Returns `$type` as a generic type which may be qualified with arguments described by `$attrs`. The argument variables of the generic are flow-grade.
 
 ### Discern Special:
 
