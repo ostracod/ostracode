@@ -124,18 +124,18 @@ The `deleteMember` method deletes the member located at `subscript`. Lists and d
 prep IteratorT = <genericT [
     args [memberT = (itemT)]
 ] (interfaceT [
+    fields [
+        isFinished (boolT) [public, vis (2)]
+    ]
     sharedFields [
         getNext (methodT [
             returns (memberT)
-        ]) [public, vis (2)]
-        isFinished (methodT [
-            returns (boolT)
         ]) [public, vis (2)]
     ]
 ])>
 ```
 
-The `getNext` method retrieves the next member in the iteration. The `isFinished` method returns whether the iteration has finished. The `IteratorT` interface interoperates with the `IterableT` interface.
+The `isFinished` field stores whether the iteration has finished. The `getNext` method retrieves the next member in the iteration. The `IteratorT` interface interoperates with the `IterableT` interface.
 
 ### Iterable Interface:
 

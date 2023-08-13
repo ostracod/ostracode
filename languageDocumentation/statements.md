@@ -112,10 +112,10 @@ importPath <$path> as $moduleName [$attrs]
 Imports the module located at file path `$path` in the current package. `$path` is relative to the `src` directory of the current package. The module will be exposed as a prep-grade variable with name identifier `$moduleName` in the current module. If `as $moduleName` is excluded, the module will not be exposed as a variable.
 
 ```
-importPackage <$packageName> as $moduleName [$attrs]
+importPackage <$specifier> as $moduleName [$attrs]
 ```
 
-Imports the main module of the external package with name string `$packageName`. The module will be exposed as a prep-grade variable with name identifier `$moduleName` in the current module. If `as $moduleName` is excluded, the module will not be exposed as a variable.
+Imports the main module of the package in `~/.ostraCodePackages` with specifier string `$specifier`. The module will be exposed as a prep-grade variable with name identifier `$moduleName` in the current module. If `as $moduleName` is excluded, the module will not be exposed as a variable.
 
 ## Attribute Statements
 

@@ -36,11 +36,11 @@ Supose that `$num1` and `$num2` are expressions with type `numT`. The type of th
 OstraCode has the following equality operators:
 
 * `$item1 #eq $item2` = Whether `$item1` is equal to `$item2`
-    * `$item1` and `$item2` are expressions with type `itemT`
-    * The type of `$item1 #eq $item2` is `boolT`
+    * `$item1` and `$item2` are expressions with type `itemT`.
+    * The type of `$item1 #eq $item2` is `boolT`.
 * `$item1 #neq $item2` = Whether `$item1` is not equal to `$item2`
-    * `$item1` and `$item2` are expressions with type `itemT`
-    * The type of `$item1 #neq $item2` is `boolT`
+    * `$item1` and `$item2` are expressions with type `itemT`.
+    * The type of `$item1 #neq $item2` is `boolT`.
 
 Supose that `$bool1` and `$bool2` are expressions with type `boolT`. The type of the following expressions is also `boolT`:
 
@@ -54,49 +54,49 @@ Suppose that `$str1` and `$str2` are expressions with type `(*ToStringT)`. The t
 OstraCode has the following member access operators:
 
 * `$item.$identifier` = Field of feature in `$item` with name `$identifier`
-    * `$item` is an expression with type `itemT`
-    * `$identifier` is an identifier
-    * The type of `$item.$identifier` is the type of the feature field
+    * `$item` is an expression with type `itemT`.
+    * `$identifier` is an identifier.
+    * The type of `$item.$identifier` is the type of the feature field.
 * `$module@$identifier` = Member of `$module` with name `$identifier`
-    * `$module` is an expression with type `moduleT`
-    * `$identifier` is an identifier
-    * The type of `$module@$identifier` is the type of the module member
+    * `$module` is an expression with type `moduleT`.
+    * `$identifier` is an identifier.
+    * The type of `$module@$identifier` is the type of the module member.
 * `$collection@$identifier` = Member of `$collection` with name `$identifier`
-    * `$collection` is an expression with type `(*SubscriptGetT+:(strT, $memberType))`
-    * `$identifier` is an identifier
-    * The type of `$collection@$identifier` is `$memberType`
+    * `$collection` is an expression with type `(*SubscriptGetT+:(strT, $memberType))`.
+    * `$identifier` is an identifier.
+    * The type of `$collection@$identifier` is `$memberType`.
 * `$collection@($subscript)` = Member of `$collection` located at `$subscript`
-    * `$collection` is an expression with type `(*SubscriptGetT+:($subscriptType, $memberType))`
-    * `$subscript` is an expression with type `$subscriptType`
-    * The type of `$collection@($subscript)` is `$memberType`
+    * `$collection` is an expression with type `(*SubscriptGetT+:($subscriptType, $memberType))`.
+    * `$subscript` is an expression with type `$subscriptType`.
+    * The type of `$collection@($subscript)` is `$memberType`.
 
 OstraCode has the following type operators:
 
 * `$item:<$type>` = Cast of `$item` to `$type`
-    * `$item` is an expression with type `itemT`
-    * `$type` is an expression with type `typeT`
-    * The type of `$item:<$type>` is `$type`
+    * `$item` is an expression with type `itemT`.
+    * `$type` is an expression with type `typeT`.
+    * The type of `$item:<$type>` is `$type`.
 * `$item::<$type>` = Force cast of `$item` to `$type`
-    * `$item` is an expression with type `itemT`
-    * `$type` is an expression with type `typeT`
-    * The type of `$item::<$type>` is `$type`
+    * `$item` is an expression with type `itemT`.
+    * `$type` is an expression with type `typeT`.
+    * The type of `$item::<$type>` is `$type`.
 * `$type1 | $type2` = Union of `$type1` and `$type2`
-    * `$type1` and `$type2` are expressions with type `typeT`
-    * The type of `$type1 | $type2` is also `typeT`
+    * `$type1` and `$type2` are expressions with type `typeT`.
+    * The type of `$type1 | $type2` is also `typeT`.
 * `$type1 & $type2` = Intersection of `$type1` and `$type2`
-    * `$type1` and `$type2` are expressions with type `typeT`
-    * The type of `$type1 & $type2` is also `typeT`
+    * `$type1` and `$type2` are expressions with type `typeT`.
+    * The type of `$type1 & $type2` is also `typeT`.
 
 Generic items may be qualified with the `+:` operator:
 
 * `$generic+:<$args>` = Qualification of `$generic` with `$args`
-    * `$generic` is an expression with type `genericT (itemT)`
-    * `<$args>` is a sequence of expressions with type `itemT`
-    * The type of `$generic+:<$args>` depends on the generic definition of `$generic` and the items returned by `<$args>`
+    * `$generic` is an expression with type `genericT (itemT)`.
+    * `<$args>` is a sequence of expressions with type `itemT`.
+    * The type of `$generic+:<$args>` depends on the generic definition of `$generic` and the items returned by `<$args>`.
 * `$type+:($args)` = Qualification of `$type` with `$args`
-    * `$type` is an expression with type `<?genericT (itemT)>`
-    * `($args)` is a sequence of expressions with type `itemT`
-    * The type of `$type+:($args)` depends on the generic definition of `$type`
+    * `$type` is an expression with type `<?genericT (itemT)>`.
+    * `($args)` is a sequence of expressions with type `itemT`.
+    * The type of `$type+:($args)` depends on the generic definition of `$type`.
 
 The expression `$ref = $item` assigns the return item of expression `$item` to reference `$ref`. The type of `$item` must conform to the type of `$ref`. `=` may be combined with various binary operators to assign the result of an operation between `$ref` and `$expr`. For example, `$ref += $item` assigns `$ref + $item` to `$ref`. The list of all composite assignment operators is below:
 
