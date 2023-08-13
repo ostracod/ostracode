@@ -31,6 +31,6 @@ To learn more about OstraCode, please consult these pages:
 * [Built-In Constants](languageDocumentation/builtIn.md)
 * [Example Code](languageDocumentation/exampleCode.md)
 * [Feature System](languageDocumentation/featureSystem.md)
-* TODO: Add more sections.
+* [Package System](languageDocumentation/packageSystem.md)
 
 
