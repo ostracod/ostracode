@@ -140,6 +140,8 @@ prep myShirt <*?ShirtSize> = <obj (CargoSize)>
 In order to access fields of a feature, the feature must have a "discerned" type. The `feature` special returns a feature with a discerned type, but `featureT` does not return a discerned type. The `discern` special helps in the case when a feature does not have a discerned type. The `discern` special accepts a feature, and returns the same feature with a discerned type. The example below demonstrates usage of the `discern` special:
 
 ```
+importBuiltIn <"math"> as mathUtils
+
 // The output of `createCoinFeature` has a constraint type which is not discerned.
 prep createCoinFeature = <func [
     args [probability <floatT>]

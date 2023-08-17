@@ -112,6 +112,12 @@ importPath <$path> as $moduleName [$attrs]
 Imports the module located at file path `$path` in the current package. `$path` is relative to the `src` directory of the current package. The module will be exposed as a prep-grade variable with name identifier `$moduleName` in the current module. If `as $moduleName` is excluded, the module will not be exposed as a variable.
 
 ```
+importBuiltIn <$name> as $moduleName [$attrs]
+```
+
+Imports the built-in module with name string `$name`. The module will be exposed as a prep-grade variable with name identifier `$moduleName` in the current module. If `as $moduleName` is excluded, the module will not be exposed as a variable.
+
+```
 importPackage <$specifier> as $moduleName [$attrs]
 ```
 
@@ -531,7 +537,7 @@ exported
 Valid contexts:
 
 * Variable statement at top level of module
-* `importPath` and `importPackage` statements
+* `importPath`, `importBuiltIn`, and `importPackage` statements
 * Member statement
 
 Asserts that the parent member may be imported by other modules from the current module.
@@ -544,7 +550,7 @@ members [$members]
 
 Valid contexts:
 
-* `importPath` and `importPackage` statements
+* `importPath`, `importBuiltIn`, and `importPackage` statements
 
 Declares the members to import from the external module.
 

@@ -186,12 +186,12 @@ The `Error` factor implements `ErrorT`, including `BaseError` and an implementat
 
 ## Built-In Modules
 
-OstraCode has the following built-in modules:
+Built-in modules are imported with the `importBuiltIn` statement. OstraCode has the following built-in modules:
 
-### Math Utils:
+### Math Module:
 
-The `mathUtils` module exports the following members:
+The math module has the name string `"math"`, and exports the following members:
 
-* `mathUtils@random()` returns a random floating-point number between 0 and 1.
+* `$mathModule@random()` returns a random floating-point number between 0 and 1.
 
 

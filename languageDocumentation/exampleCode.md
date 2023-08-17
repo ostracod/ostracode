@@ -203,6 +203,9 @@ prep myInt2 <myIntT> = <123:<myIntT>>
 The example below demonstrates type checking in flow-phase:
 
 ```
+// Imports the built-in math module.
+importBuiltIn <"math"> as mathUtils
+
 entryPoint <func {
     
     var myType <typeT>
