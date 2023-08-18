@@ -3,7 +3,27 @@
 
 A programming language by Jack Eisenmann
 
-## Installation and Usage
+## Installation
+
+To compile the interpreter, you will need these system-wide dependencies:
+
+* C++ 17 compiler such as Clang or GCC
+* Conan ^2.0.9
+* CMake ^3.27.2
+
+If you are using macOS, you can obtain a C++ compiler by installing the [Xcode command line tools](https://mac.install.guide/commandlinetools/index.html). Then you can use [Brew](https://brew.sh) to install Conan and CMake: `brew install cmake conan`
+
+After you install the system-wide dependencies, perform these commands within the OstraCode repository directory:
+
+```
+conan profile detect --force
+conan install . --output-folder=build --build=missing
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+cmake --build .
+```
+
+## Usage
 
 TODO: Write this section.
 
