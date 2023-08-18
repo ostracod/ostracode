@@ -127,41 +127,51 @@ Imports the main module of the package in `~/.ostraCodePackages` with specifier 
 
 OstraCode has the following attribute statements:
 
-### List Value Statements:
-
-Valid contexts for list value statements:
-
-* `list` special
+### Element Type Statements:
 
 ```
 elemType <$type>
 ```
 
+Valid contexts:
+
+* `list` special
+
 Asserts that the type of each element in the parent list value conforms to `$type`.
-
-```
-length <$length>
-```
-
-Asserts that the number of elements in the parent list value is `$length`.
-
-### List Type Statements:
-
-Valid contexts for list type statements:
-
-* `listT` special
 
 ```
 elemType ($type)
 ```
 
+Valid contexts:
+
+* `listT` special
+
 Asserts that the type of each element in the parent list type conforms to `$type`.
+
+### Length Statements:
+
+```
+length <$length>
+```
+
+Valid contexts:
+
+* `buffer` special
+* `list` special
+
+Asserts that the number of elements in the parent sequence value is `$length`.
 
 ```
 length ($length)
 ```
 
-Asserts that the number of elements in the parent list type is `$length`.
+Valid contexts:
+
+* `bufferT` special
+* `listT` special
+
+Asserts that the number of elements in the parent sequence type is `$length`.
 
 ### Arguments Statement:
 
@@ -537,7 +547,9 @@ exported
 Valid contexts:
 
 * Variable statement at top level of module
-* `importPath`, `importBuiltIn`, and `importPackage` statements
+* `importPath` statement
+* `importBuiltIn` statement
+* `importPackage` statement
 * Member statement
 
 Asserts that the parent member may be imported by other modules from the current module.
@@ -550,7 +562,9 @@ members [$members]
 
 Valid contexts:
 
-* `importPath`, `importBuiltIn`, and `importPackage` statements
+* `importPath` statement
+* `importBuiltIn` statement
+* `importPackage` statement
 
 Declares the members to import from the external module.
 

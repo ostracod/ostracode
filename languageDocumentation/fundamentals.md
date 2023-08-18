@@ -66,7 +66,8 @@ OstraCode has the following data types:
 * `boolT` is the type of a boolean value. A boolean value is either true or false.
 * `intT` is the type of a signed 64-bit integer.
 * `floatT` is the type of a double-precision floating-point number.
-* `strT` is the type of a string. A string is a sequence of characters.
+* `bufferT` is the type of a buffer. A buffer is a mutable sequence of bytes.
+* `strT` is the type of a string. A string is an immutable sequence of characters.
 * `symbolT` is the type of a symbol. Every symbol is globally unique.
 * `listT` is the type of a list. A list is a sequence of items.
 * `dictT` is the type of a dictionary. A dictionary is an associative array of items whose keys are also items.

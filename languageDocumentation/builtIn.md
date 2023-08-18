@@ -52,7 +52,7 @@ prep LengthT = <interfaceT [
 ]>
 ```
 
-The `length` field stores the number of members in the parent item. Strings, lists, and dictionaries implement `LengthT`.
+The `length` field stores the number of members in the parent item. Buffers, strings, lists, and dictionaries implement `LengthT`.
 
 ### Conforms To Interface:
 
@@ -84,7 +84,7 @@ prep SubscriptGetT = <genericT [
 ])>
 ```
 
-The `getMember` method retrieves the member located at `subscript`. Strings, lists, and dictionaries implement `SubscriptGetT`. The `SubscriptGetT` interface interoperates with the subscript operator (`@`).
+The `getMember` method retrieves the member located at `subscript`. Buffers, strings, lists, and dictionaries implement `SubscriptGetT`. The `SubscriptGetT` interface interoperates with the subscript operator (`@`).
 
 ### Subscript Set Interface:
 
@@ -100,7 +100,7 @@ prep SubscriptSetT = <genericT [
 ])>
 ```
 
-The `setMember` method modifies the member located at `subscript`. Lists and dictionaries implement `SubscriptSetT`. The `SubscriptSetT` interface interoperates with the subscript operator (`@`).
+The `setMember` method modifies the member located at `subscript`. Buffers, lists, and dictionaries implement `SubscriptSetT`. The `SubscriptSetT` interface interoperates with the subscript operator (`@`).
 
 ### Subscript Delete Interface:
 
@@ -116,7 +116,7 @@ prep SubscriptDeleteT = <genericT [
 ])>
 ```
 
-The `deleteMember` method deletes the member located at `subscript`. Lists and dictionaries implement `SubscriptDeleteT`.
+The `deleteMember` method deletes the member located at `subscript`. Buffers, lists, and dictionaries implement `SubscriptDeleteT`.
 
 ### Iterator Interface:
 
@@ -151,7 +151,7 @@ prep IterableT = <genericT [
 ])>
 ```
 
-The `createIterator` method creates a new iterator which iterates over members in the parent item. Strings, lists, and dictionaries implement `IterableT`. The `IterableT` interface interoperates with the `for` statement.
+The `createIterator` method creates a new iterator which iterates over members in the parent item. Buffers, strings, lists, and dictionaries implement `IterableT`. The `IterableT` interface interoperates with the `for` statement.
 
 ### Base Error Interface:
 

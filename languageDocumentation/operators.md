@@ -112,6 +112,20 @@ The return type of all assignment operators is `nullT`.
 
 OstraCode has the following specials:
 
+### Buffer Specials:
+
+```
+buffer [$attrs] ($bytes)
+```
+
+Creates a buffer value whose bytes are determined by the integer sequence `$bytes`. If `($bytes)` is excluded, `buffer` creates an empty buffer.
+
+```
+bufferT [$attrs]
+```
+
+Creates a buffer type whose length is described by `$attrs`.
+
 ### List Specials:
 
 ```
