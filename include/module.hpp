@@ -13,8 +13,12 @@ class Module {
     
     Package *package;
     fs::path path;
+    fs::path absPath;
+    std::string fileContent;
     
     Module(Package *package, fs::path path);
+    void readFile();
+    void import();
 };
 
 #endif

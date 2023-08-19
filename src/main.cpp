@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     } else {
         app.setEntryModule(absPath);
     }
-    std::cout << "Entry module: " << app.entryModule->path << std::endl;
+    app.run();
     return 0;
 }
 

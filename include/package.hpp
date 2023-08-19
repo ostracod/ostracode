@@ -8,6 +8,8 @@
 
 namespace fs = std::filesystem;
 
+class Application;
+
 class Package {
     public:
     
@@ -15,6 +17,7 @@ class Package {
     
     static fs::path getPathByModule(fs::path modulePath);
     
+    Application *app;
     fs::path path;
     fs::path srcPath;
     fs::path appModulePath;
@@ -22,7 +25,7 @@ class Package {
     std::string name;
     std::map<fs::path, Module *> modules;
     
-    Package(fs::path path);
+    Package(Application *app, fs::path path);
     // `path` must be normal and relative to `srcPath`.
     Module *getModule(fs::path path);
     Module *getAppModule();

@@ -22,7 +22,8 @@ fs::path Package::getPathByModule(fs::path modulePath) {
     return fs::path();
 }
 
-Package::Package(fs::path path) {
+Package::Package(Application *app, fs::path path) {
+    this->app = app;
     this->path = path;
     this->srcPath = this->path / fs::path("src");
     fs::path configPath = this->path / fs::path(Package::configFileName);
