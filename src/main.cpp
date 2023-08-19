@@ -1,15 +1,24 @@
 
 #include <iostream>
-#include "json/json.h"
+#include <filesystem>
+#include "application.hpp"
 
-int main() {
-    Json::Value value;
-    Json::CharReaderBuilder builder;
-    Json::CharReader *reader = builder.newCharReader();
-    std::string text = "{\"message\": \"Hello, world!\"}";
-    std::string error;
-    reader->parse(text.c_str(), text.c_str() + text.length(), &value, &error);
-    std::cout << value["message"].asString() << std::endl;
+namespace fs = std::filesystem;
+
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        std::cerr << "Usage:" << std::endl << "ostracode (packagePath)" << std::endl << "ostracode (modulePath)" << std::endl;
+        return 1;
+    }
+    std::string argStr(argv[1]);
+    fs::path argPath(argStr);
+    fs::path absPath = fs::canonical(fs::absolute(argPath));
+    Application app;
+    if (fs::is_directory(absPath)) {
+        app.setEntryPackage(absPath);
+    } else {
+        app.setEntryModule(absPath);
+    }
     return 0;
 }
 

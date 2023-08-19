@@ -5,7 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(jsoncpp REQUIRED)
 
-add_executable(ostracode src/main.cpp)
+include_directories(include)
+file(GLOB SOURCES "src/*.cpp")
+add_executable(ostracode ${SOURCES})
 target_link_libraries(ostracode JsonCpp::JsonCpp)
 
 
