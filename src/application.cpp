@@ -12,12 +12,17 @@ Application::Application() {
 
 void Application::setEntryPackage(fs::path path) {
     this->entryPackage = new Package(path);
-    std::cout << "Package name: " << this->entryPackage->name << std::endl;
+    this->entryModule = this->entryPackage->getAppModule();
 }
 
 void Application::setEntryModule(fs::path path) {
-    // TODO: Implement.
-    
+    fs::path packagePath = Package::getPathByModule(path);
+    if (packagePath.empty()) {
+        throw std::runtime_error(path.string() + " is not inside an OstraCode package.");
+    }
+    this->entryPackage = new Package(packagePath);
+    fs::path relPath = fs::relative(path, this->entryPackage->srcPath).lexically_normal();
+    this->entryModule = this->entryPackage->getModule(relPath);
 }
 
 
