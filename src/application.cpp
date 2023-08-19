@@ -2,6 +2,7 @@
 #include <iostream>
 #include <filesystem>
 #include "application.hpp"
+#include "package.hpp"
 
 namespace fs = std::filesystem;
 
@@ -10,11 +11,13 @@ Application::Application() {
 }
 
 void Application::setEntryPackage(fs::path path) {
-    std::cout << "Entry package: " << path << std::endl;
+    this->entryPackage = new Package(path);
+    std::cout << "Package name: " << this->entryPackage->name << std::endl;
 }
 
 void Application::setEntryModule(fs::path path) {
-    std::cout << "Entry module: " << path << std::endl;
+    // TODO: Implement.
+    
 }
 
 
