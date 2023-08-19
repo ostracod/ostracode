@@ -47,7 +47,8 @@ dictT [fields [
     name (strT)
     version (strT)
     ostraCodeVersion (strT)
-    mainModule (strT) [optional]
+    appModule (strT) [optional]
+    libModule (strT) [optional]
     registries (dictT [fieldType (
         dictT [fields [
             url (strT)
@@ -67,7 +68,8 @@ dictT [fields [
 * `name` is the name of the package.
 * `version` is the semantic version number of the package.
 * `ostraCodeVersion` is the semantic version number of OstraCode with which the package is compatible.
-* `mainModule` is the path of the main module relative to the `src` directory. The `importPackage` statement imports the main module of the given package.
+* `appModule` defines the default entry-point module when running the package as an application. `appModule` is a path relative to the `src` directory.
+* `libModule` defines the module which will be imported when using the `importPackage` statement. `libModule` is a path relative to the `src` directory.
 * `registries` is a map from name to package registry.
     * `url` is the web address where the package registry responds to requests.
 * `dependencies` is a map from import specifier to dependency.

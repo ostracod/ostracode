@@ -101,7 +101,7 @@ Throws error `$error` which will be handled by a `try` statement. The type of `$
 entryPoint <$func>
 ```
 
-Declares that the entry point of the current package is `$func`. The entry point function will be invoked when running the current package as an application.
+Declares that the entry-point function of the current application is `$func`. Each application must define exactly one entry-point function.
 
 ### Import Statements:
 
@@ -121,7 +121,7 @@ Imports the built-in module with name string `$name`. The module will be exposed
 importPackage <$specifier> as $moduleName [$attrs]
 ```
 
-Imports the main module of the package in `~/.ostraCodePackages` with specifier string `$specifier`. The module will be exposed as a prep-grade variable with name identifier `$moduleName` in the current module. If `as $moduleName` is excluded, the module will not be exposed as a variable.
+Imports the library module of the package in `~/.ostraCodePackages` with specifier string `$specifier`. The library module is determined by the `libModule` field in `ostraConfig.json` of the package. The module will be exposed as a prep-grade variable with name identifier `$moduleName` in the current module. If `as $moduleName` is excluded, the module will not be exposed as a variable.
 
 ## Attribute Statements
 
