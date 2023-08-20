@@ -4,6 +4,7 @@
 #include <sstream>
 #include "package.hpp"
 #include "module.hpp"
+#include "token.hpp"
 
 Module::Module(Package *package, fs::path path) {
     this->package = package;
@@ -21,8 +22,14 @@ void Module::readFile() {
     std::cout << "Content of " << this->path << ":" << std::endl << this->fileContent << std::endl;
 }
 
+void Module::parseTokens() {
+    TokenParser parser(&(this->fileContent));
+    this->tokens = parser.parseTokens();
+}
+
 void Module::import() {
     this->readFile();
+    this->parseTokens();
     // TODO: Finish implementation.
     
 }
