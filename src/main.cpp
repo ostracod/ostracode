@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <filesystem>
+#include "token.hpp"
 #include "application.hpp"
 
 namespace fs = std::filesystem;
@@ -10,6 +11,7 @@ int main(int argc, char* argv[]) {
         std::cerr << "Usage:" << std::endl << "ostracode (packagePath)" << std::endl << "ostracode (modulePath)" << std::endl;
         return 1;
     }
+    TokenText::init();
     fs::path argPath(argv[1]);
     fs::path absPath = fs::absolute(argPath).lexically_normal();
     Application app;

@@ -6,11 +6,13 @@
 #include <vector>
 
 enum class TokenType {
-    Word, Int, Float, Str, OpenBracket, CloseBracket, Separator, Operator
+    Empty, Word, Int, Float, Str, OpenBracket, CloseBracket, Separator, Operator
 };
 
 class Token {
     public:
+    
+    static Token empty;
     
     TokenType type;
     int lineNum;
@@ -42,6 +44,20 @@ class FloatToken: public Token {
     FloatToken(int lineNum, double value);
 };
 
+class TokenText {
+    public:
+    
+    static std::vector<TokenText> tokenTextList;
+    
+    static void init();
+    static void add(std::string text, TokenType type);
+    
+    std::string text;
+    TokenType type;
+    
+    TokenText(std::string text, TokenType type);
+};
+
 class TokenParser {
     public:
     
@@ -50,6 +66,10 @@ class TokenParser {
     int lineNum;
     
     TokenParser(std::string *content);
+    char peekChar(int offset);
+    void advanceIndex(int amount);
+    bool matchText(std::string text);
+    Token parseToken();
     std::vector<Token> parseTokens();
 };
 
