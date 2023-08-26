@@ -68,8 +68,8 @@ class TokenParser {
     int lineNum;
     
     TokenParser(std::string *content);
-    char peekChar(int offset);
-    void advanceIndex(int amount);
+    char peekChar(int offset = 0);
+    void advanceIndex(int amount = 1);
     bool matchText(std::string text);
     void seekChar(char targetChar);
     std::string parseTokenHelper(bool (*charMatches)(char));

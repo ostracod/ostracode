@@ -2,9 +2,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "package.hpp"
-#include "module.hpp"
+#include "error.hpp"
 #include "token.hpp"
+#include "module.hpp"
+#include "package.hpp"
 
 Module::Module(Package *package, fs::path path) {
     this->package = package;
@@ -30,10 +31,17 @@ void Module::parseTokens() {
 }
 
 void Module::import() {
-    this->readFile();
-    this->parseTokens();
-    // TODO: Finish implementation.
+    try {
+        this->readFile();
+        this->parseTokens();
+        // TODO: Finish implementation.
     
+    } catch (Error &error) {
+        if (error.module == NULL) {
+            error.module = this;
+        }
+        throw error;
+    }
 }
 
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include "error.hpp"
 #include "token.hpp"
 
 Token::Token(TokenType type, int lineNum) {
@@ -148,7 +149,7 @@ TokenParser::TokenParser(std::string *content) {
     this->lineNum = 1;
 }
 
-char TokenParser::peekChar(int offset = 0) {
+char TokenParser::peekChar(int offset) {
     int index = this->index + offset;
     if (index < this->content->length()) {
         return this->content->at(index);
@@ -157,7 +158,7 @@ char TokenParser::peekChar(int offset = 0) {
     }
 }
 
-void TokenParser::advanceIndex(int amount = 1) {
+void TokenParser::advanceIndex(int amount) {
     for (int count = 0; count < amount; count++) {
         char character = this->peekChar();
         if (character == '\n') {
@@ -230,7 +231,7 @@ Token *TokenParser::parseDecNumToken() {
             }
             decPointCount += 1;
             if (decPointCount > 1) {
-                throw std::runtime_error("Number contains too many decimal points.");
+                throw Error("Number contains too many decimal points.");
             }
         } else if (!isDecDigit(character)) {
             break;
@@ -279,13 +280,21 @@ Token *TokenParser::parseToken() {
             return new TextToken(tokenText.type, lineNum, tokenText.text);
         }
     }
-    throw std::runtime_error("Unexpected character '" + std::string(1, firstChar) + "'.");
+    throw Error("Unexpected character '" + std::string(1, firstChar) + "'.");
 }
 
 std::vector<Token *> TokenParser::parseTokens() {
     std::vector<Token *> output;
     while (this->index < this->content->length()) {
-        Token *token = this->parseToken();
+        Token *token;
+        try {
+            token = this->parseToken();
+        } catch (Error &error) {
+            if (error.lineNum <= 0) {
+                error.lineNum = this->lineNum;
+            }
+            throw error;
+        }
         if (token != NULL) {
             output.push_back(token);
         }

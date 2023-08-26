@@ -1,8 +1,9 @@
 
 #include <iostream>
 #include <filesystem>
-#include "application.hpp"
+#include "error.hpp"
 #include "package.hpp"
+#include "application.hpp"
 
 namespace fs = std::filesystem;
 
@@ -24,7 +25,7 @@ void Application::setEntryPackage(fs::path path) {
 void Application::setEntryModule(fs::path path) {
     fs::path packagePath = Package::getPathByModule(path);
     if (packagePath.empty()) {
-        throw std::runtime_error(path.string() + " is not inside an OstraCode package.");
+        throw Error(path.string() + " is not inside an OstraCode package.");
     }
     this->entryPackage = this->getPackage(packagePath);
     fs::path relPath = fs::relative(path, this->entryPackage->srcPath).lexically_normal();
