@@ -5,8 +5,6 @@
 #include <algorithm>
 #include "token.hpp"
 
-Token *Token::empty = new Token(TokenType::Empty, 0);
-
 Token::Token(TokenType type, int lineNum) {
     this->type = type;
     this->lineNum = lineNum;
@@ -208,18 +206,57 @@ Token *TokenParser::parseHexIntToken() {
     return new IntToken(lineNum, value);
 }
 
+Token *TokenParser::parseDecNumToken() {
+    int lineNum = this->lineNum;
+    int startIndex = this->index;
+    int decPointCount = 0;
+    while (this->index < this->content->length()) {
+        char character = this->peekChar();
+        if (character == '.') {
+            // Do not confuse decimal point with member access operator.
+            char nextChar = this->peekChar(1);
+            if (isFirstWordChar(nextChar) || nextChar == ' ') {
+                break;
+            }
+            decPointCount += 1;
+            if (decPointCount > 1) {
+                throw std::runtime_error("Number contains too many decimal points.");
+            }
+        } else if (!isDecDigit(character)) {
+            break;
+        }
+        this->advanceIndex();
+    }
+    if (this->index == startIndex) {
+        return NULL;
+    }
+    std::string text = this->content->substr(startIndex, this->index - startIndex);
+    std::stringstream strStream;
+    if (decPointCount > 0) {
+        return new FloatToken(lineNum, std::stod(text));
+    } else {
+        return new IntToken(lineNum, std::stoi(text));
+    }
+}
+
 Token *TokenParser::parseToken() {
     char firstChar = this->peekChar();
     if (firstChar == ' ') {
         this->advanceIndex();
-        return Token::empty;
+        return NULL;
     }
     if (isFirstWordChar(firstChar)) {
         return this->parseWordToken();
     }
     bool isHexInt = this->matchText("0x");
     if (isHexInt) {
-        return parseHexIntToken();
+        return this->parseHexIntToken();
+    }
+    if (isDecDigit(firstChar) || firstChar == '.') {
+        Token *token = this->parseDecNumToken();
+        if (token != NULL) {
+            return token;
+        }
     }
     int lineNum = this->lineNum;
     for (auto &tokenText : TokenText::tokenTextList) {
@@ -234,7 +271,7 @@ std::vector<Token *> TokenParser::parseTokens() {
     std::vector<Token *> output;
     while (this->index < this->content->length()) {
         Token *token = this->parseToken();
-        if (token->type != TokenType::Empty) {
+        if (token != NULL) {
             output.push_back(token);
         }
     }
