@@ -1,26 +1,43 @@
 
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include "token.hpp"
 
-Token Token::empty(TokenType::Empty, 0);
+Token *Token::empty = new Token(TokenType::Empty, 0);
 
 Token::Token(TokenType type, int lineNum) {
     this->type = type;
     this->lineNum = lineNum;
 }
 
+std::string Token::toString() {
+    return "(Empty)";
+}
+
 TextToken::TextToken(TokenType type, int lineNum, std::string text) : Token(type, lineNum) {
     this->text = text;
+}
+
+std::string TextToken::toString() {
+    return this->text;
 }
 
 IntToken::IntToken(int lineNum, int value) : Token(TokenType::Int, lineNum) {
     this->value = value;
 }
 
+std::string IntToken::toString() {
+    return std::to_string(this->value);
+}
+
 FloatToken::FloatToken(int lineNum, double value) : Token(TokenType::Float, lineNum) {
     this->value = value;
+}
+
+std::string FloatToken::toString() {
+    return std::to_string(this->value);
 }
 
 std::vector<TokenText> TokenText::tokenTextList;
@@ -29,9 +46,88 @@ bool compareLength(TokenText tokenText1, TokenText tokenText2) {
     return (tokenText1.text.length() > tokenText2.text.length());
 }
 
+bool isDecDigit(char character) {
+    return (character >= '0' && character <= '9');
+}
+
+bool isHexDigit(char character) {
+    return (isDecDigit(character)
+        || (character >= 'A' && character <= 'F')
+        || (character >= 'a' && character <= 'f'));
+}
+
+bool isFirstWordChar(char character) {
+    return ((character >= 'A' && character <= 'Z')
+        || (character >= 'a' && character <= 'z')
+        || character == '_' || character == '$');
+}
+
+bool isWordChar(char character) {
+    return isFirstWordChar(character) || isDecDigit(character);
+}
+
 void TokenText::init() {
+    TokenText::add("(", TokenType::OpenBracket);
+    TokenText::add("(*", TokenType::OpenBracket);
+    TokenText::add("<", TokenType::OpenBracket);
+    TokenText::add("<?", TokenType::OpenBracket);
+    TokenText::add("<*", TokenType::OpenBracket);
+    TokenText::add("<*?", TokenType::OpenBracket);
+    TokenText::add("{", TokenType::OpenBracket);
+    TokenText::add("[", TokenType::OpenBracket);
+    TokenText::add(")", TokenType::CloseBracket);
+    TokenText::add(">", TokenType::CloseBracket);
+    TokenText::add("}", TokenType::CloseBracket);
+    TokenText::add("]", TokenType::CloseBracket);
     TokenText::add(" ", TokenType::Separator);
     TokenText::add("\n", TokenType::Separator);
+    TokenText::add("+", TokenType::Operator);
+    TokenText::add("-", TokenType::Operator);
+    TokenText::add("*", TokenType::Operator);
+    TokenText::add("/", TokenType::Operator);
+    TokenText::add("//", TokenType::Operator);
+    TokenText::add("%", TokenType::Operator);
+    TokenText::add("**", TokenType::Operator);
+    TokenText::add("~", TokenType::Operator);
+    TokenText::add("|", TokenType::Operator);
+    TokenText::add("&", TokenType::Operator);
+    TokenText::add("^", TokenType::Operator);
+    TokenText::add("!", TokenType::Operator);
+    TokenText::add("||", TokenType::Operator);
+    TokenText::add("&&", TokenType::Operator);
+    TokenText::add("^^", TokenType::Operator);
+    TokenText::add("#sl", TokenType::Operator);
+    TokenText::add("#sr", TokenType::Operator);
+    TokenText::add("#srz", TokenType::Operator);
+    TokenText::add("#lt", TokenType::Operator);
+    TokenText::add("#lte", TokenType::Operator);
+    TokenText::add("#gt", TokenType::Operator);
+    TokenText::add("#gte", TokenType::Operator);
+    TokenText::add("#eq", TokenType::Operator);
+    TokenText::add("#neq", TokenType::Operator);
+    TokenText::add(";", TokenType::Operator);
+    TokenText::add(".", TokenType::Operator);
+    TokenText::add("@", TokenType::Operator);
+    TokenText::add(":", TokenType::Operator);
+    TokenText::add("::", TokenType::Operator);
+    TokenText::add("+:", TokenType::Operator);
+    TokenText::add("=", TokenType::Operator);
+    TokenText::add("+=", TokenType::Operator);
+    TokenText::add("-=", TokenType::Operator);
+    TokenText::add("*=", TokenType::Operator);
+    TokenText::add("/=", TokenType::Operator);
+    TokenText::add("%=", TokenType::Operator);
+    TokenText::add("**=", TokenType::Operator);
+    TokenText::add("|=", TokenType::Operator);
+    TokenText::add("&=", TokenType::Operator);
+    TokenText::add("^=", TokenType::Operator);
+    TokenText::add("||=", TokenType::Operator);
+    TokenText::add("&&=", TokenType::Operator);
+    TokenText::add("^^=", TokenType::Operator);
+    TokenText::add("#sl=", TokenType::Operator);
+    TokenText::add("#sr=", TokenType::Operator);
+    TokenText::add("#srz=", TokenType::Operator);
+    TokenText::add(";=", TokenType::Operator);
     std::sort(
         TokenText::tokenTextList.begin(),
         TokenText::tokenTextList.end(),
@@ -84,26 +180,61 @@ bool TokenParser::matchText(std::string text) {
     return false;
 }
 
-Token TokenParser::parseToken() {
+std::string TokenParser::parseTokenHelper(bool (*charMatches)(char)) {
+    int startIndex = this->index;
+    while (this->index < this->content->length()) {
+        char character = this->peekChar();
+        if (!charMatches(character)) {
+            break;
+        }
+        this->advanceIndex();
+    }
+    return this->content->substr(startIndex, this->index - startIndex);
+}
+
+Token *TokenParser::parseWordToken() {
+    int lineNum = this->lineNum;
+    std::string text = this->parseTokenHelper(isWordChar);
+    return new TextToken(TokenType::Word, lineNum, text);
+}
+
+Token *TokenParser::parseHexIntToken() {
+    int lineNum = this->lineNum;
+    std::string text = this->parseTokenHelper(isHexDigit);
+    int value;
+    std::stringstream strStream;
+    strStream << std::hex << text;
+    strStream >> value;
+    return new IntToken(lineNum, value);
+}
+
+Token *TokenParser::parseToken() {
     char firstChar = this->peekChar();
     if (firstChar == ' ') {
         this->advanceIndex();
         return Token::empty;
     }
+    if (isFirstWordChar(firstChar)) {
+        return this->parseWordToken();
+    }
+    bool isHexInt = this->matchText("0x");
+    if (isHexInt) {
+        return parseHexIntToken();
+    }
     int lineNum = this->lineNum;
     for (auto &tokenText : TokenText::tokenTextList) {
         if (this->matchText(tokenText.text)) {
-            return TextToken(tokenText.type, lineNum, tokenText.text);
+            return new TextToken(tokenText.type, lineNum, tokenText.text);
         }
     }
     throw std::runtime_error("Unexpected character '" + std::string(1, firstChar) + "'.");
 }
 
-std::vector<Token> TokenParser::parseTokens() {
-    std::vector<Token> output;
+std::vector<Token *> TokenParser::parseTokens() {
+    std::vector<Token *> output;
     while (this->index < this->content->length()) {
-        Token token = this->parseToken();
-        if (token.type != TokenType::Empty) {
+        Token *token = this->parseToken();
+        if (token->type != TokenType::Empty) {
             output.push_back(token);
         }
     }

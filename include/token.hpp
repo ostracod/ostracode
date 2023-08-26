@@ -12,12 +12,13 @@ enum class TokenType {
 class Token {
     public:
     
-    static Token empty;
+    static Token *empty;
     
     TokenType type;
     int lineNum;
     
     Token(TokenType type, int lineNum);
+    virtual std::string toString();
 };
 
 class TextToken: public Token {
@@ -26,6 +27,7 @@ class TextToken: public Token {
     std::string text;
     
     TextToken(TokenType type, int lineNum, std::string text);
+    std::string toString();
 };
 
 class IntToken: public Token {
@@ -34,6 +36,7 @@ class IntToken: public Token {
     int value;
     
     IntToken(int lineNum, int value);
+    std::string toString();
 };
 
 class FloatToken: public Token {
@@ -42,6 +45,7 @@ class FloatToken: public Token {
     double value;
     
     FloatToken(int lineNum, double value);
+    std::string toString();
 };
 
 class TokenText {
@@ -69,8 +73,11 @@ class TokenParser {
     char peekChar(int offset);
     void advanceIndex(int amount);
     bool matchText(std::string text);
-    Token parseToken();
-    std::vector<Token> parseTokens();
+    std::string parseTokenHelper(bool (*charMatches)(char));
+    Token *parseWordToken();
+    Token *parseHexIntToken();
+    Token *parseToken();
+    std::vector<Token *> parseTokens();
 };
 
 #endif

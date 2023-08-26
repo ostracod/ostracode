@@ -19,12 +19,14 @@ void Module::readFile() {
     strStream << fileStream.rdbuf();
     fileStream.close();
     this->fileContent = strStream.str();
-    std::cout << "Content of " << this->path << ":" << std::endl << this->fileContent << std::endl;
 }
 
 void Module::parseTokens() {
     TokenParser parser(&(this->fileContent));
     this->tokens = parser.parseTokens();
+    for (auto &token : this->tokens) {
+        std::cout << token->toString() << std::endl;
+    }
 }
 
 void Module::import() {

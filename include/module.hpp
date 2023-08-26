@@ -17,7 +17,7 @@ class Module {
     fs::path path;
     fs::path absPath;
     std::string fileContent;
-    std::vector<Token> tokens;
+    std::vector<Token *> tokens;
     
     Module(Package *package, fs::path path);
     void readFile();
