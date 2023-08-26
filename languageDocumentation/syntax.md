@@ -90,7 +90,7 @@ Each statement contains one or more of the following components:
 
 Note that attribute statement sequences are always optional in statements, and may be excluded when empty.
 
-A comment with the prefix `//` may be placed at the end of any line.
+A comment with the prefix `--` may be placed at the end of any line.
 
 ## Invocation Syntax
 

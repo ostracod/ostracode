@@ -8,7 +8,7 @@ This page documents the feature system in OstraCode.
 Every object in OstraCode includes one or more "features". A feature defines fields which may be accessed from the parent object. Fields declared in `fields` are stored in each instance of the object. Fields declared in `sharedFields` are shared between all objects which include the feature. The example below declares a feature and creates two objects which include the feature:
 
 ```
-// Define the feature `MyFeature`.
+-- Define the feature `MyFeature`.
 prep MyFeature = <feature [
     fields [
         myInstanceField <strT> [public]
@@ -20,24 +20,24 @@ prep MyFeature = <feature [
 
 entryPoint <func {
     
-    // Creates two objects which include `MyFeature`.
+    -- Creates two objects which include `MyFeature`.
     var myObj1 = (obj (MyFeature))
     var myObj2 = (obj (MyFeature))
     
-    // Assigns values to `myInstanceField` in each object.
+    -- Assigns values to `myInstanceField` in each object.
     (myObj1.myInstanceField = "Hello!")
     (myObj2.myInstanceField = "Hi!")
-    // Prints "Hello!".
+    -- Prints "Hello!".
     (print(myObj1.myInstanceField))
-    // Prints "Hi!".
+    -- Prints "Hi!".
     (print(myObj2.myInstanceField))
     
-    // Assigns a value to `mySharedField`. Note that both `myObj1`
-    // and `myObj2` share the same value of `mySharedField`.
+    -- Assigns a value to `mySharedField`. Note that both `myObj1`
+    -- and `myObj2` share the same value of `mySharedField`.
     (myObj1.mySharedField = "Goodbye!")
-    // Prints "Goodbye!".
+    -- Prints "Goodbye!".
     (print(myObj1.mySharedField))
-    // Also prints "Goodbye!".
+    -- Also prints "Goodbye!".
     (print(myObj2.mySharedField))
 }>
 ```
@@ -58,9 +58,9 @@ prep Counter = <feature [
 
 entryPoint <func {
     var myCounter = (obj (Counter))
-    // Invokes the `increment` method.
+    -- Invokes the `increment` method.
     (myCounter.increment())
-    // Prints "1".
+    -- Prints "1".
     (print(myCounter.count))
 }>
 ```
@@ -68,14 +68,14 @@ entryPoint <func {
 An "interface" defines field types without providing default values. Every feature may implement a single interface. Features which implement the same interface may be used interchangeably. The example below declares two features which implement the same interface:
 
 ```
-// Declares an interface with one method.
+-- Declares an interface with one method.
 prep SpeakT = <interfaceT [
     sharedFields [
         speak (methodT [returns (strT)]) [public]
     ]
 ]>
 
-// Declares a feature which implements `SpeakT`.
+-- Declares a feature which implements `SpeakT`.
 prep DogSpeak = <feature [
     implements <SpeakT>
     sharedFields [
@@ -85,7 +85,7 @@ prep DogSpeak = <feature [
     ]
 ]>
 
-// Declares another feature which implements `SpeakT`.
+-- Declares another feature which implements `SpeakT`.
 prep CatSpeak = <feature [
     implements <SpeakT>
     sharedFields [
@@ -96,15 +96,15 @@ prep CatSpeak = <feature [
 ]>
 
 entryPoint <func {
-    // `mySpeaker` can store any object which includes a feature that implements `SpeakT`.
+    -- `mySpeaker` can store any object which includes a feature that implements `SpeakT`.
     var mySpeaker <*SpeakT>
-    // Assign an object which includes the `DogSpeak` feature.
+    -- Assign an object which includes the `DogSpeak` feature.
     (mySpeaker = obj (DogSpeak))
-    // Prints "Woof!".
+    -- Prints "Woof!".
     (print(mySpeaker.speak())
-    // Assign an object which includes the `CatSpeak` feature.
+    -- Assign an object which includes the `CatSpeak` feature.
     (mySpeaker = obj (CatSpeak))
-    // Prints "Meow!".
+    -- Prints "Meow!".
     (print(mySpeaker.speak())
 }>
 ```
@@ -116,7 +116,7 @@ prep SizeT = <interfaceT [
     fields [size (intT) [public]]
 ]>
 
-// Note how `CargoSize` and `ShirtSize` do not have `implements` statements.
+-- Note how `CargoSize` and `ShirtSize` do not have `implements` statements.
 
 prep CargoSize = <feature [
     fields [size <intT> [public]]
@@ -126,14 +126,14 @@ prep ShirtSize = <feature [
     fields [size <intT> [public]]
 ]>
 
-// Throws an error, because `CargoSize` does not implement `SizeT`.
+-- Throws an error, because `CargoSize` does not implement `SizeT`.
 prep sizeObj1 <*SizeT> = <obj (CargoSize)>
-// Throws an error, because `ShirtSize` does not implement `SizeT`.
+-- Throws an error, because `ShirtSize` does not implement `SizeT`.
 prep sizeObj2 <*SizeT> = <obj (ShirtSize)>
 
-// Does not throw an error.
+-- Does not throw an error.
 prep myCargo <*?CargoSize> = <obj (CargoSize)>
-// Throws an error, because `<*?CargoSize>` does not conform to `<*?ShirtSize>`.
+-- Throws an error, because `<*?CargoSize>` does not conform to `<*?ShirtSize>`.
 prep myShirt <*?ShirtSize> = <obj (CargoSize)>
 ```
 
@@ -142,7 +142,7 @@ In order to access fields of a feature, the feature must have a "discerned" type
 ```
 importBuiltIn <"math"> as mathUtils
 
-// The output of `createCoinFeature` has a constraint type which is not discerned.
+-- The output of `createCoinFeature` has a constraint type which is not discerned.
 prep createCoinFeature = <func [
     args [probability <floatT>]
     returns <featureT [sharedFields [
@@ -157,15 +157,15 @@ prep createCoinFeature = <func [
 }>
 
 entryPoint <func {
-    // `AmbiguousCoin` does not have a discerned type.
+    -- `AmbiguousCoin` does not have a discerned type.
     var AmbiguousCoin = (createCoinFeature(0.7))
-    // `DiscernedCoin` has a discerned type.
+    -- `DiscernedCoin` has a discerned type.
     var DiscernedCoin = (discern (AmbiguousCoin))
     var coin1 = (obj (AmbiguousCoin))
     var coin2 = (obj (DiscernedCoin))
-    // Throws an error, because the feature of `coin1` does not have a discerned type.
+    -- Throws an error, because the feature of `coin1` does not have a discerned type.
     (print(coin1.flip()))
-    // Does not throw an error.
+    -- Does not throw an error.
     (print(coin2.flip()))
 }>
 ```
@@ -192,17 +192,17 @@ prep Nameable = <feature [
     ]
 ]>
 
-// Declares a bundle which contains `AddFive` and `Nameable`.
+-- Declares a bundle which contains `AddFive` and `Nameable`.
 prep MyBundle = <bundle [
     factors [(AddFive), (Nameable)]
 ]>
 
 entryPoint <func {
-    // Creates an object which includes `MyBundle`.
+    -- Creates an object which includes `MyBundle`.
     var myObj = (obj (MyBundle))
-    // Prints "15".
+    -- Prints "15".
     (print(myObj:<*?AddFive>.addFive(10)))
-    // Assigns "Steve" to the `name` field in the `Nameable` feature of `myObj`.
+    -- Assigns "Steve" to the `name` field in the `Nameable` feature of `myObj`.
     (myObj:<*?Nameable>.name = "Steve")
 }>
 ```
@@ -226,9 +226,9 @@ prep AbcBundle = <bundle [factors [(AFeature), (BcBundle)]]>
 
 entryPoint <func {
     var myAbc = (obj (AbcBundle))
-    (print(myAbc:<*?AFeature>.a)) // Prints "10".
-    (print(myAbc:<*?BFeature>.b)) // Prints "20".
-    (print(myAbc:<*?CFeature>.c)) // Prints "30".
+    (print(myAbc:<*?AFeature>.a)) -- Prints "10".
+    (print(myAbc:<*?BFeature>.b)) -- Prints "20".
+    (print(myAbc:<*?CFeature>.c)) -- Prints "30".
 }>
 ```
 
@@ -256,8 +256,8 @@ prep IsSmall = <feature [
         ] {
             return (value #lt 0.1)
         })
-        // The visibility of `isTiny` is 1, because 1 is the default
-        // visibility when a `vis` statement is not provided.
+        -- The visibility of `isTiny` is 1, because 1 is the default
+        -- visibility when a `vis` statement is not provided.
         isTiny [public] = (method [
             args [value <numT>]
             returns <boolT>
@@ -267,23 +267,23 @@ prep IsSmall = <feature [
     ]
 ]>
 
-// Within the `SizeCheck` bundle, `isBig` and `isSmall` have
-// visibility 1, while `isTiny` has visibility 0.
+-- Within the `SizeCheck` bundle, `isBig` and `isSmall` have
+-- visibility 1, while `isTiny` has visibility 0.
 prep SizeCheck = <bundle [factors [(IsBig), (IsSmall)]]>
 
 entryPoint <func {
     var sizeChecker = (obj (SizeCheck))
-    // Does not throw an error, because the visibility of
-    // `isBig` in `SizeCheck` is greater than 0.
+    -- Does not throw an error, because the visibility of
+    -- `isBig` in `SizeCheck` is greater than 0.
     (print(sizeChecker.isBig(1000)))
-    // Does not throw an error, because the visibility of
-    // `isSmall` in `SizeCheck` is greater than 0.
+    -- Does not throw an error, because the visibility of
+    -- `isSmall` in `SizeCheck` is greater than 0.
     (print(sizeChecker.isSmall(1000)))
-    // Throws an error, because the visibility of `isTiny`
-    // in `SizeCheck` is not greater than 0.
+    -- Throws an error, because the visibility of `isTiny`
+    -- in `SizeCheck` is not greater than 0.
     (print(sizeChecker.isTiny(1000)))
-    // Does not throw an error, because the visibility of
-    // `isTiny` in `IsSmall` is greater than 0.
+    -- Does not throw an error, because the visibility of
+    -- `isTiny` in `IsSmall` is greater than 0.
     (print(sizeChecker:<*?IsSmall>.isTiny(1000)))
 }>
 ```
@@ -298,23 +298,23 @@ prep Height = <feature [
     fields [height <intT> [public]]
 ]>
 
-// Within the `Profile` bundle, the visibility of `age` is 1,
-// while the visibility of `height` is 0.
+-- Within the `Profile` bundle, the visibility of `age` is 1,
+-- while the visibility of `height` is 0.
 prep Profile = <bundle [factors [
-    // The visibility of fields in `Age` will decrease by 0.
+    -- The visibility of fields in `Age` will decrease by 0.
     (Age) [shield <0>]
-    // The visibility of fields in `Height` will decrease by 1, because that is the
-    // default amount when a `shield` statement is not provided.
+    -- The visibility of fields in `Height` will decrease by 1, because that is the
+    -- default amount when a `shield` statement is not provided.
     (Height)
 ]]>
 
 entryPoint <func {
     var myProfile = (obj (Profile))
-    // Does not throw an error.
+    -- Does not throw an error.
     (myProfile.age = 30)
-    // Throws an error, because `height` is not visibile in `Profile`.
+    -- Throws an error, because `height` is not visibile in `Profile`.
     (myProfile.height = 180)
-    // Does not throw an error.
+    -- Does not throw an error.
     (myProfile:<*?Height>.height = 180)
 }>
 ```
@@ -342,11 +342,11 @@ entryPoint <func {
     var steve = (obj (bundle [
         factors [(VideoManager), (Athlete) [shield <0>]]
     ]))
-    // Throws an error, because `play` has a name collision.
+    -- Throws an error, because `play` has a name collision.
     (steve.play())
-    // Does not throw an error.
+    -- Does not throw an error.
     (steve:<*?VideoManager>.play())
-    // Does not throw an error.
+    -- Does not throw an error.
     (steve:<*?Athlete>.play())
 }>
 ```
@@ -363,7 +363,7 @@ prep Count = <feature [
 ]>
 
 prep Increment = <feature [
-    // The type of `this` in methods of `Increment` will be `objT <?Count>`.
+    -- The type of `this` in methods of `Increment` will be `objT <?Count>`.
     thisFactor <?Count>
     sharedFields [
         increment [public, vis <2>] = (method {
@@ -377,7 +377,7 @@ entryPoint <func {
         factors [(Count), (Increment)]
     ]))
     (counter.increment())
-    (print(counter.count)) // Prints "1".
+    (print(counter.count)) -- Prints "1".
 }>
 ```
 
@@ -404,10 +404,10 @@ prep GreetWorld = <feature [
     ]
 ]>
 
-// Throws an error, because `CreateGreeting` must be
-// included in the same object as `GreetWorld`.
+-- Throws an error, because `CreateGreeting` must be
+-- included in the same object as `GreetWorld`.
 prep badGreeter = <obj (GreetWorld)>
-// Does not throw an error.
+-- Does not throw an error.
 prep goodGreeter = <obj (bundle [
     factors[(CreateGreeting), (GreetWorld)]
 ])>
@@ -429,9 +429,9 @@ prep Toggle = <feature [
     ]
     sharedFields [
         toggle [public] = (method {
-            // The type of `this` is `objT <?IsActive>`.
+            -- The type of `this` is `objT <?IsActive>`.
             (this.isActive = !this.isActive)
-            // The type of `self` is `objT <?Toggle>`.
+            -- The type of `self` is `objT <?Toggle>`.
             (self.toggleCount += 1)
         })
     ]
@@ -447,8 +447,8 @@ entryPoint <func {
     (toggler.toggle())
     (toggler.toggle())
     (toggler.toggle())
-    (print(toggler.isActive)) // Prints "true".
-    (print(toggler.toggleCount)) // Prints "3".
+    (print(toggler.isActive)) -- Prints "true".
+    (print(toggler.toggleCount)) -- Prints "3".
 }>
 ```
 
@@ -465,7 +465,7 @@ prep MultiCounter = <feature [
     ]
     sharedFields [
         incrementSecret [public, vis <2>] = (method {
-            // Does not throw an error, because `secretCount` is defined in the same feature.
+            -- Does not throw an error, because `secretCount` is defined in the same feature.
             (self.secretCount += 1)
         })
         getCountSum [public, vis <2>] = (method [returns <intT>] {
@@ -478,11 +478,11 @@ prep IncrementInternal = <feature [
     thisFactor <?MultiCounter>
     sharedFields [
         incrementInternal [public, vis <2>] = (method {
-            // Does not throw an error, because `internalCount` belongs to the same object.
+            -- Does not throw an error, because `internalCount` belongs to the same object.
             (this.internalCount += 1)
         })
         badAccess [public, vis <2>] = (method {
-            // Throws an error, because `secretCount` is defined in a different feature.
+            -- Throws an error, because `secretCount` is defined in a different feature.
             (this.secretCount += 1)
         })
     ]
@@ -492,13 +492,13 @@ entryPoint <func {
     var multiCounter = (obj (bundle [
         factors [(MultiCounter), (IncrementInternal)]
     ]))
-    // Does not throw an error.
+    -- Does not throw an error.
     (multiCounter.exposedCount += 1)
-    // Throws an error, because `internalCount` is accessed outside of
-    // a method belonging to `multiCounter`.
+    -- Throws an error, because `internalCount` is accessed outside of
+    -- a method belonging to `multiCounter`.
     (multiCounter.internalCount += 1)
-    // Throws an error, because `secretCount` is accessed outside of
-    // a method defined in `MultiCounter`.
+    -- Throws an error, because `secretCount` is accessed outside of
+    -- a method defined in `MultiCounter`.
     (multiCounter.secretCount += 1)
 }>
 ```
@@ -508,27 +508,27 @@ entryPoint <func {
 A generic factor may be "qualified" with one or more arguments. Field types and method signatures may reference the generic arguments. Generic factors may be created by using the `generic` special. The example below demonstrates usage of generic factors:
 
 ```
-// `ListNode` may be qualified with an argument named
-// `contentT`, whose constraint type is `typeT`.
+-- `ListNode` may be qualified with an argument named
+-- `contentT`, whose constraint type is `typeT`.
 prep ListNode = <generic [
     args [contentT <typeT>]
 ] (feature [
     fields [
-        // The constraint type of `content` is equal to the generic argument `contentT`.
+        -- The constraint type of `content` is equal to the generic argument `contentT`.
         content <contentT> [public]
-        // `next` can store another node which stores the same type of content.
+        -- `next` can store another node which stores the same type of content.
         next <*?ListNode+:<contentT>> [public]
     ]
 ])>
 
 entryPoint <func {
-    // `node1` and `node2` include `ListNode` qualified with `intT`.
+    -- `node1` and `node2` include `ListNode` qualified with `intT`.
     var node1 = (obj (ListNode+:<intT>))
     var node2 = (obj (ListNode+:<intT>))
-    // The type of `content` in `node1` and `node2` is `intT`.
+    -- The type of `content` in `node1` and `node2` is `intT`.
     (node1.content = 10)
     (node2.content = 20)
-    // The type of `next` in `node1` and `node2` is `<*?ListNode+:<intT>>`.
+    -- The type of `next` in `node1` and `node2` is `<*?ListNode+:<intT>>`.
     (node1.next = node2)
 }>
 ```

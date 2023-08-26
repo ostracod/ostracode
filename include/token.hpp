@@ -71,6 +71,7 @@ class TokenParser {
     char peekChar(int offset);
     void advanceIndex(int amount);
     bool matchText(std::string text);
+    void seekChar(char targetChar);
     std::string parseTokenHelper(bool (*charMatches)(char));
     Token *parseWordToken();
     Token *parseHexIntToken();

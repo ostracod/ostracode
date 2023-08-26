@@ -178,6 +178,16 @@ bool TokenParser::matchText(std::string text) {
     return false;
 }
 
+void TokenParser::seekChar(char targetChar) {
+    while (this->index < this->content->length()) {
+        char character = this->peekChar();
+        if (character == targetChar) {
+            break;
+        }
+        this->advanceIndex();
+    }
+}
+
 std::string TokenParser::parseTokenHelper(bool (*charMatches)(char)) {
     int startIndex = this->index;
     while (this->index < this->content->length()) {
@@ -247,6 +257,11 @@ Token *TokenParser::parseToken() {
     }
     if (isFirstWordChar(firstChar)) {
         return this->parseWordToken();
+    }
+    bool isComment = this->matchText("--");
+    if (isComment) {
+        this->seekChar(10);
+        return NULL;
     }
     bool isHexInt = this->matchText("0x");
     if (isHexInt) {
