@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
         }
         app.run();
     } catch (Error &error) {
-        std::cout << error.toString() << std::endl;
+        std::cout << error.toStr() << std::endl;
         return 1;
     }
     return 0;

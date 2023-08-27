@@ -19,7 +19,7 @@ OstraCode includes the following built-in items:
 OstraCode has the following built-in functions:
 
 * `print($item)` prints item `$item` to standard output.
-* `symbol($name)` creates a new symbol. Every symbol is globally unique. `$name` is optional, and must be a string if provided. `$name` is used in the `toString` representation of the symbol, but otherwise does not affect the uniqueness of the symbol.
+* `symbol($name)` creates a new symbol. Every symbol is globally unique. `$name` is optional, and must be a string if provided. `$name` is used in the `toStr` representation of the symbol, but otherwise does not affect the uniqueness of the symbol.
 * `getType($item)` returns the type of item `$item` known during flow-phase.
 * `nominalT($type)` creates a subtype of type `$type`. The subtype defines the same data structure as `$type`, but is distinguished through the nominal type system.
 * `literalT($item)` creates a type which only contains items equal to `$item`. For example, `literalT(16)` is the type of all numbers which are equal to 16.
@@ -31,16 +31,16 @@ OstraCode has the following built-in interfaces:
 ### To String Interface:
 
 ```
-prep ToStringT = <interfaceT [
+prep ToStrT = <interfaceT [
     sharedFields [
-        toString (methodT [
+        toStr (methodT [
             returns (strT)
         ]) [public, vis (2)]
     ]
 ]>
 ```
 
-The `toString` method converts the parent item to a string. Every non-object item implements `ToStringT`. The `ToStringT` interface interoperates with the string concatenation operator (`;`).
+The `toStr` method converts the parent item to a string. Every non-object item implements `ToStrT`. The `ToStrT` interface interoperates with the string concatenation operator (`;`).
 
 ### Length Interface:
 
@@ -172,7 +172,7 @@ OstraCode has the following built-in factors:
 
 ### Stack Trace Factor:
 
-The `StackTraceT` factor type represents a stack trace, and includes `ToStringT`. In the future, `StackTraceT` may include more feature types.
+The `StackTraceT` factor type represents a stack trace, and includes `ToStrT`. In the future, `StackTraceT` may include more feature types.
 
 ### Error Factors:
 
@@ -180,9 +180,9 @@ The `BaseError` factor implements `BaseErrorT`, and provides the following addit
 
 * `$baseError.init($message)` initializes the error with string message `$message`.
 
-The `ErrorT` factor type includes `BaseErrorT` and `ToStringT`. All errors thrown by `throw` statements and caught by `try` statements conform to `ErrorT`.
+The `ErrorT` factor type includes `BaseErrorT` and `ToStrT`. All errors thrown by `throw` statements and caught by `try` statements conform to `ErrorT`.
 
-The `Error` factor implements `ErrorT`, including `BaseError` and an implementation of `ToStringT`.
+The `Error` factor implements `ErrorT`, including `BaseError` and an implementation of `ToStrT`.
 
 ## Built-In Modules
 

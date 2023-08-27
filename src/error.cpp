@@ -9,7 +9,7 @@ Error::Error(std::string message, int lineNum) {
     this->module = NULL;
 }
 
-std::string Error::toString() {
+std::string Error::toStr() {
     std::stringstream strStream;
     strStream << "Error";
     if (this->lineNum > 0) {

@@ -14,7 +14,7 @@ class Error {
     Module *module;
     
     Error(std::string message, int lineNum = 0);
-    std::string toString();
+    std::string toStr();
 };
 
 #endif

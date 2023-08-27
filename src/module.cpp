@@ -26,7 +26,7 @@ void Module::parseTokens() {
     TokenParser parser(&(this->fileContent));
     this->tokens = parser.parseTokens();
     for (auto &token : this->tokens) {
-        std::cout << token->toString() << std::endl;
+        std::cout << token->toStr() << std::endl;
     }
 }
 

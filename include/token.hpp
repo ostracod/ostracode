@@ -16,7 +16,7 @@ class Token {
     int lineNum;
     
     Token(TokenType type, int lineNum);
-    virtual std::string toString() = 0;
+    virtual std::string toStr() = 0;
 };
 
 class TextToken: public Token {
@@ -25,7 +25,7 @@ class TextToken: public Token {
     std::string text;
     
     TextToken(TokenType type, int lineNum, std::string text);
-    std::string toString();
+    std::string toStr();
 };
 
 class IntToken: public Token {
@@ -34,7 +34,7 @@ class IntToken: public Token {
     int value;
     
     IntToken(int lineNum, int value);
-    std::string toString();
+    std::string toStr();
 };
 
 class FloatToken: public Token {
@@ -43,7 +43,7 @@ class FloatToken: public Token {
     double value;
     
     FloatToken(int lineNum, double value);
-    std::string toString();
+    std::string toStr();
 };
 
 class TokenText {
@@ -70,12 +70,16 @@ class TokenParser {
     TokenParser(std::string *content);
     char peekChar(int offset = 0);
     void advanceIndex(int amount = 1);
+    char readChar();
+    char readCharWithEscape();
     bool matchText(std::string text);
     void seekChar(char targetChar);
     std::string parseTokenHelper(bool (*charMatches)(char));
-    Token *parseWordToken();
-    Token *parseHexIntToken();
+    TextToken *parseWordToken();
+    IntToken *parseHexIntToken();
     Token *parseDecNumToken();
+    IntToken *parseCharToken();
+    TextToken *parseStrToken();
     Token *parseToken();
     std::vector<Token *> parseTokens();
 };

@@ -11,7 +11,7 @@ Token::Token(TokenType type, int lineNum) {
     this->lineNum = lineNum;
 }
 
-std::string Token::toString() {
+std::string Token::toStr() {
     return "(Empty)";
 }
 
@@ -19,7 +19,7 @@ TextToken::TextToken(TokenType type, int lineNum, std::string text) : Token(type
     this->text = text;
 }
 
-std::string TextToken::toString() {
+std::string TextToken::toStr() {
     return this->text;
 }
 
@@ -27,7 +27,7 @@ IntToken::IntToken(int lineNum, int value) : Token(TokenType::Int, lineNum) {
     this->value = value;
 }
 
-std::string IntToken::toString() {
+std::string IntToken::toStr() {
     return std::to_string(this->value);
 }
 
@@ -35,7 +35,7 @@ FloatToken::FloatToken(int lineNum, double value) : Token(TokenType::Float, line
     this->value = value;
 }
 
-std::string FloatToken::toString() {
+std::string FloatToken::toStr() {
     return std::to_string(this->value);
 }
 
@@ -168,6 +168,27 @@ void TokenParser::advanceIndex(int amount) {
     }
 }
 
+char TokenParser::readChar() {
+    char output = this->peekChar();
+    this->advanceIndex();
+    return output;
+}
+
+char TokenParser::readCharWithEscape() {
+    char character = this->readChar();
+    if (character != '\\') {
+        return character;
+    }
+    character = this->readChar();
+    if (character == 'n') {
+        return '\n';
+    } else if (character == 't') {
+        return '\t';
+    } else {
+        return character;
+    }
+}
+
 bool TokenParser::matchText(std::string text) {
     if (this->index + text.length() <= this->content->length()) {
         std::string subText = this->content->substr(index, text.length());
@@ -201,13 +222,13 @@ std::string TokenParser::parseTokenHelper(bool (*charMatches)(char)) {
     return this->content->substr(startIndex, this->index - startIndex);
 }
 
-Token *TokenParser::parseWordToken() {
+TextToken *TokenParser::parseWordToken() {
     int lineNum = this->lineNum;
     std::string text = this->parseTokenHelper(isWordChar);
     return new TextToken(TokenType::Word, lineNum, text);
 }
 
-Token *TokenParser::parseHexIntToken() {
+IntToken *TokenParser::parseHexIntToken() {
     int lineNum = this->lineNum;
     std::string text = this->parseTokenHelper(isHexDigit);
     int value;
@@ -242,7 +263,6 @@ Token *TokenParser::parseDecNumToken() {
         return NULL;
     }
     std::string text = this->content->substr(startIndex, this->index - startIndex);
-    std::stringstream strStream;
     if (decPointCount > 0) {
         return new FloatToken(lineNum, std::stod(text));
     } else {
@@ -250,11 +270,51 @@ Token *TokenParser::parseDecNumToken() {
     }
 }
 
+IntToken *TokenParser::parseCharToken() {
+    this->advanceIndex();
+    char character = this->readCharWithEscape();
+    if (character == 0) {
+        throw Error("Expected character.");
+    }
+    char apostropheChar = this->readChar();
+    if (apostropheChar != '\'') {
+        throw Error("Expected apostrophe.");
+    }
+    return new IntToken(this->lineNum, character);
+}
+
+TextToken *TokenParser::parseStrToken() {
+    this->advanceIndex();
+    std::stringstream strStream;
+    while (true) {
+        if (this->index >= this->content->length()) {
+            throw Error("Expected end quotation mark.");
+        }
+        char character = this->peekChar();
+        if (character == '"') {
+            this->advanceIndex();
+            break;
+        }
+        character = this->readCharWithEscape();
+        if (character == 0) {
+            throw Error("Unexpected end of string.");
+        }
+        strStream << character;
+    }
+    return new TextToken(TokenType::Str, this->lineNum, strStream.str());
+}
+
 Token *TokenParser::parseToken() {
     char firstChar = this->peekChar();
     if (firstChar == ' ') {
         this->advanceIndex();
         return NULL;
+    }
+    if (firstChar == '\'') {
+        return this->parseCharToken();
+    }
+    if (firstChar == '"') {
+        return this->parseStrToken();
     }
     if (isFirstWordChar(firstChar)) {
         return this->parseWordToken();

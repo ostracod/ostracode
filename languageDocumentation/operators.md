@@ -49,7 +49,7 @@ Supose that `$bool1` and `$bool2` are expressions with type `boolT`. The type of
 * `$bool1 && $bool2` = Logical AND of `$bool1` and `$bool2`
 * `$bool1 ^^ $bool2` = Logical XOR of `$bool1` and `$bool2`
 
-Suppose that `$str1` and `$str2` are expressions with type `(*ToStringT)`. The type of the expression `$str1 ; $str2` is also `strT`, and returns the concatenation of `$str1` and `$str2`.
+Suppose that `$str1` and `$str2` are expressions with type `(*ToStrT)`. The type of the expression `$str1 ; $str2` is also `strT`, and returns the concatenation of `$str1` and `$str2`.
 
 OstraCode has the following member access operators:
 
