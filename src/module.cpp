@@ -4,6 +4,8 @@
 #include <sstream>
 #include "error.hpp"
 #include "token.hpp"
+#include "group.hpp"
+#include "groupSeq.hpp"
 #include "module.hpp"
 #include "package.hpp"
 
@@ -30,10 +32,16 @@ void Module::parseTokens() {
     }
 }
 
+void Module::parsePreGroups() {
+    // TODO: Implement.
+    
+}
+
 void Module::import() {
     try {
         this->readFile();
         this->parseTokens();
+        this->parsePreGroups();
         // TODO: Finish implementation.
     
     } catch (Error &error) {

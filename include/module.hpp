@@ -5,6 +5,7 @@
 #include <vector>
 #include <filesystem>
 #include "token.hpp"
+#include "groupSeq.hpp"
 
 namespace fs = std::filesystem;
 
@@ -18,10 +19,12 @@ class Module {
     fs::path absPath;
     std::string fileContent;
     std::vector<Token *> tokens;
+    StmtSeq *bhvrStmtSeq;
     
     Module(Package *package, fs::path path);
     void readFile();
     void parseTokens();
+    void parsePreGroups();
     void import();
 };
 
