@@ -17,11 +17,29 @@ class GroupSeq {
     GroupSeq(std::vector<T *> groups);
 };
 
-class ExprSeq : GroupSeq<Expr> {
+class ExprSeq: public GroupSeq<Expr> {
     
 };
 
-class StmtSeq : GroupSeq<Stmt> {
+class PrepExprSeq: public ExprSeq {
+    
+};
+
+class FlowExprSeq: public ExprSeq {
+    
+};
+
+// `T` must conform to `Stmt`.
+template <class T>
+class StmtSeq: public GroupSeq<T> {
+    
+};
+
+class BhvrStmtSeq: public StmtSeq<BhvrStmt> {
+    
+};
+
+class AttrStmtSeq: public StmtSeq<AttrStmt> {
     
 };
 

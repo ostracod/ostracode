@@ -6,15 +6,13 @@
 #include "component.hpp"
 #include "group.hpp"
 
-class Expr : public Group {
+class Expr : virtual public Group {
     public:
     
 };
 
-class PreExpr : public Expr {
+class PreExpr : public Expr, public PreGroup {
     public:
-    
-    std::vector<Component *> components;
     
     PreExpr(std::vector<Component *> components);
 };

@@ -33,7 +33,8 @@ void Module::parseTokens() {
 }
 
 void Module::parsePreGroups() {
-    // TODO: Implement.
+    PreGroupParser parser(&(this->tokens));
+    
     
 }
 

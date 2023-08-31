@@ -14,6 +14,8 @@ class Component {
     Component(ComponentType type);
 };
 
+class Token;
+
 class TokenComponent: public Component {
     public:
     

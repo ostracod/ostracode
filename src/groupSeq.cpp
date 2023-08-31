@@ -2,7 +2,7 @@
 #include "groupSeq.hpp"
 
 template <class T>
-GroupSeq::GroupSeq(std::vector<T *> groups) {
+GroupSeq<T>::GroupSeq(std::vector<T *> groups) {
     this->groups = groups;
 }
 

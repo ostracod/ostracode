@@ -19,7 +19,7 @@ class Module {
     fs::path absPath;
     std::string fileContent;
     std::vector<Token *> tokens;
-    StmtSeq *bhvrStmtSeq;
+    BhvrStmtSeq *bhvrStmtSeq;
     
     Module(Package *package, fs::path path);
     void readFile();

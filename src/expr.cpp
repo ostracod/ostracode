@@ -1,8 +1,8 @@
 
 #include "expr.hpp"
 
-PreExpr::PreExpr(std::vector<Component *> components) : Expr() {
-    this->components = components;
+PreExpr::PreExpr(std::vector<Component *> components) : Expr(), PreGroup(components) {
+    
 }
 
 
