@@ -25,6 +25,16 @@ class PreGroupParser {
     int index;
     
     PreGroupParser(std::vector<Token *> *tokens);
+    Token *peekToken();
+    Token *readToken();
+    GroupSeq<> *parseGroupSeq();
+    Component *parseComponent();
+    // `T` must conform to `PreGroup`.
+    template <class T>
+    T *parsePreGroup(T *(*createPreGroup)(std::vector<Component *>));
+    // `T` must conform to `PreGroup`.
+    template <class T>
+    std::vector<T *> parsePreGroups(T *(*createPreGroup)(std::vector<Component *>));
 };
 
 #endif

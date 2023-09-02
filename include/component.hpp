@@ -3,7 +3,7 @@
 #define COMPONENT_HEADER_FILE
 
 enum class ComponentType {
-    Token, Stmt, Expr
+    Token, GroupSeq
 };
 
 class Component {
@@ -24,24 +24,17 @@ class TokenComponent: public Component {
     TokenComponent(Token *token);
 };
 
-class Stmt;
+class Group;
 
-class StmtComponent: public Component {
+template <class T = Group>
+class GroupSeq;
+
+class GroupSeqComponent: public Component {
     public:
     
-    Stmt *stmt;
+    GroupSeq<> *groupSeq;
     
-    StmtComponent(Stmt *stmt);
-};
-
-class Expr;
-
-class ExprComponent: public Component {
-    public:
-    
-    Expr *expr;
-    
-    ExprComponent(Expr *expr);
+    GroupSeqComponent(GroupSeq<> *groupSeq);
 };
 
 #endif

@@ -9,12 +9,8 @@ TokenComponent::TokenComponent(Token *token) : Component(ComponentType::Token) {
     this->token = token;
 }
 
-StmtComponent::StmtComponent(Stmt *stmt) : Component(ComponentType::Stmt) {
-    this->stmt = stmt;
-}
-
-ExprComponent::ExprComponent(Expr *expr) : Component(ComponentType::Expr) {
-    this->expr = expr;
+GroupSeqComponent::GroupSeqComponent(GroupSeq<> *groupSeq) : Component(ComponentType::GroupSeq) {
+    this->groupSeq = groupSeq;
 }
 
 
