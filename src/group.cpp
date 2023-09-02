@@ -1,6 +1,8 @@
 
+#include "error.hpp"
 #include "component.hpp"
 #include "group.hpp"
+#include "groupSeq.hpp"
 
 PreGroup::PreGroup(std::vector<Component *> components) : Group() {
     this->components = components;
@@ -26,8 +28,14 @@ Token *PreGroupParser::readToken() {
 }
 
 GroupSeq<> *PreGroupParser::parseGroupSeq() {
-    // TODO: Implement.
-    return NULL;
+    TextToken *openBracketToken = static_cast<TextToken *>(this->readToken());
+    GroupSeqBuilder *groupSeqBuilder = GroupSeqBuilder::create(openBracketToken->text);
+    std::vector<PreGroup *> preGroups = this->parsePreGroups<PreGroup>(groupSeqBuilder->preGroupBuilder);
+    Token *closeBracketToken = this->readToken();
+    if (closeBracketToken->type != TokenType::CloseBracket || static_cast<TextToken *>(closeBracketToken)->text != groupSeqBuilder->closeBracketText) {
+        throw Error("Missing " + groupSeqBuilder->closeBracketText + ".");
+    }
+    return groupSeqBuilder->createGroupSeq(preGroups);
 }
 
 Component *PreGroupParser::parseComponent() {
@@ -44,7 +52,7 @@ Component *PreGroupParser::parseComponent() {
 }
 
 template <class T>
-T *PreGroupParser::parsePreGroup(T *(*createPreGroup)(std::vector<Component *>)) {
+T *PreGroupParser::parsePreGroup(PreGroupBuilder<T> *preGroupBuilder) {
     std::vector<Component *> components;
     while (this->index < this->tokens->size()) {
         Token *token = this->peekToken();
@@ -59,21 +67,21 @@ T *PreGroupParser::parsePreGroup(T *(*createPreGroup)(std::vector<Component *>))
         components.push_back(component);
     }
     if (components.size() > 0) {
-        return createPreGroup(components);
+        return preGroupBuilder->createPreGroup(components);
     } else {
         return NULL;
     }
 }
 
 template <class T>
-std::vector<T *> PreGroupParser::parsePreGroups(T *(*createPreGroup)(std::vector<Component *>)) {
+std::vector<T *> PreGroupParser::parsePreGroups(PreGroupBuilder<T> *preGroupBuilder) {
     std::vector<T *> output;
     while (this->index < this->tokens->size()) {
         Token *token = this->peekToken();
         if (token->type == TokenType::CloseBracket) {
             break;
         }
-        T *preGroup = this->parsePreGroup(createPreGroup);
+        T *preGroup = this->parsePreGroup(preGroupBuilder);
         if (preGroup != NULL) {
             output.push_back(preGroup);
         }
