@@ -21,6 +21,9 @@ class BhvrStmt: virtual public Stmt {
 };
 
 class BhvrPreStmt: public BhvrStmt, public PreStmt {
+    public:
+    
+    static BhvrPreStmt *create(std::vector<Component *> components);
     
     BhvrPreStmt(std::vector<Component *> components);
 };
@@ -30,6 +33,9 @@ class AttrStmt: virtual public Stmt {
 };
 
 class AttrPreStmt: public AttrStmt, public PreStmt {
+    public:
+    
+    static AttrPreStmt *create(std::vector<Component *> components);
     
     AttrPreStmt(std::vector<Component *> components);
 };

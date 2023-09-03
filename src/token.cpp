@@ -15,7 +15,7 @@ std::string Token::toStr() {
     return "(Empty)";
 }
 
-TextToken::TextToken(TokenType type, int lineNum, std::string text) : Token(type, lineNum) {
+TextToken::TextToken(TokenType type, int lineNum, std::string text): Token(type, lineNum) {
     this->text = text;
 }
 
@@ -23,7 +23,7 @@ std::string TextToken::toStr() {
     return this->text;
 }
 
-IntToken::IntToken(int lineNum, int value) : Token(TokenType::Int, lineNum) {
+IntToken::IntToken(int lineNum, int value): Token(TokenType::Int, lineNum) {
     this->value = value;
 }
 
@@ -31,7 +31,7 @@ std::string IntToken::toStr() {
     return std::to_string(this->value);
 }
 
-FloatToken::FloatToken(int lineNum, double value) : Token(TokenType::Float, lineNum) {
+FloatToken::FloatToken(int lineNum, double value): Token(TokenType::Float, lineNum) {
     this->value = value;
 }
 

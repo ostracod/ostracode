@@ -62,16 +62,46 @@ class AttrStmtSeq: public StmtSeq<AttrStmt> {
     AttrStmtSeq(std::vector<AttrStmt *> stmts);
 };
 
+// `T1` must conform to `GroupSeq`, and `T2` must conform to `PreGroup`.
+template <class T1 = GroupSeq<>, class T2 = PreGroup>
 class GroupSeqBuilder {
     public:
     
-    static GroupSeqBuilder *create(std::string openBrackText);
-    
-    PreGroupBuilder<> *preGroupBuilder;
+    CreatePreGroup<T2> createPreGroup;
     std::string closeBracketText;
     
-    GroupSeqBuilder(PreGroupBuilder<> *preGroupBuilder, std::string closeBracketText);
-    virtual GroupSeq<> *createGroupSeq(std::vector<PreGroup *> preGroups) = 0;
+    GroupSeqBuilder(CreatePreGroup<T2> createPreGroup, std::string closeBracketText);
+    virtual T1 *createGroupSeq(std::vector<T2 *> preGroups) = 0;
+};
+
+GroupSeqBuilder<> *createGroupSeqBuilder(std::string openBrackText);
+
+class PrepExprSeqBuilder: public GroupSeqBuilder<PrepExprSeq, PreExpr> {
+    public:
+    
+    PrepExprSeqBuilder();
+    PrepExprSeq *createGroupSeq(std::vector<PreExpr *> preExprs);
+};
+
+class FlowExprSeqBuilder: public GroupSeqBuilder<FlowExprSeq, PreExpr> {
+    public:
+    
+    FlowExprSeqBuilder();
+    FlowExprSeq *createGroupSeq(std::vector<PreExpr *> preExprs);
+};
+
+class BhvrStmtSeqBuilder: public GroupSeqBuilder<BhvrStmtSeq, BhvrPreStmt> {
+    public:
+    
+    BhvrStmtSeqBuilder();
+    BhvrStmtSeq *createGroupSeq(std::vector<BhvrPreStmt *> preStmts);
+};
+
+class AttrStmtSeqBuilder: public GroupSeqBuilder<AttrStmtSeq, AttrPreStmt> {
+    public:
+    
+    AttrStmtSeqBuilder();
+    AttrStmtSeq *createGroupSeq(std::vector<AttrPreStmt *> preStmts);
 };
 
 #endif

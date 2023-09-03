@@ -18,13 +18,9 @@ class PreGroup: virtual public Group {
     PreGroup(std::vector<Component *> components);
 };
 
-// `T` must conform to `PreGroup`.
-template <class T = PreGroup>
-class PreGroupBuilder {
-    public:
-    
-    virtual T *createPreGroup(std::vector<Component *> components) = 0;
-};
+// `T` must be `PreStmt` or `PreExpr`.
+template <class T = Group>
+using CreatePreGroup = T *(*)(std::vector<Component *>);
 
 class PreGroupParser {
     public:
@@ -39,10 +35,10 @@ class PreGroupParser {
     Component *parseComponent();
     // `T` must conform to `PreGroup`.
     template <class T>
-    T *parsePreGroup(PreGroupBuilder<T> *preGroupBuilder);
+    T *parsePreGroup(CreatePreGroup<T> createPreGroup);
     // `T` must conform to `PreGroup`.
     template <class T>
-    std::vector<T *> parsePreGroups(PreGroupBuilder<T> *preGroupBuilder);
+    std::vector<T *> parsePreGroups(CreatePreGroup<T> createPreGroup);
 };
 
 #endif

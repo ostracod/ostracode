@@ -1,4 +1,5 @@
 
+#include "utils.hpp"
 #include "groupSeq.hpp"
 
 template <class T>
@@ -32,14 +33,47 @@ AttrStmtSeq::AttrStmtSeq(std::vector<AttrStmt *> stmts): StmtSeq<AttrStmt>(Group
     
 }
 
-GroupSeqBuilder *GroupSeqBuilder::create(std::string openBrackText) {
+template <class T1, class T2>
+GroupSeqBuilder<T1, T2>::GroupSeqBuilder(CreatePreGroup<T2> createPreGroup, std::string closeBracketText) {
+    this->createPreGroup = createPreGroup;
+    this->closeBracketText = closeBracketText;
+}
+
+GroupSeqBuilder<> *createGroupSeqBuilder(std::string openBrackText) {
     // TODO: Implement.
     return NULL;
 }
 
-GroupSeqBuilder::GroupSeqBuilder(PreGroupBuilder<> *preGroupBuilder, std::string closeBracketText) {
-    this->preGroupBuilder = preGroupBuilder;
-    this->closeBracketText = closeBracketText;
+PrepExprSeqBuilder::PrepExprSeqBuilder(): GroupSeqBuilder<PrepExprSeq, PreExpr>(PreExpr::create, ">") {
+    
+}
+
+PrepExprSeq *PrepExprSeqBuilder::createGroupSeq(std::vector<PreExpr *> preExprs) {
+    return new PrepExprSeq(castPtrVector<PreExpr, Expr>(preExprs));
+}
+
+FlowExprSeqBuilder::FlowExprSeqBuilder(): GroupSeqBuilder<FlowExprSeq, PreExpr>(PreExpr::create, ")") {
+    
+}
+
+FlowExprSeq *FlowExprSeqBuilder::createGroupSeq(std::vector<PreExpr *> preExprs) {
+    return new FlowExprSeq(castPtrVector<PreExpr, Expr>(preExprs));
+}
+
+BhvrStmtSeqBuilder::BhvrStmtSeqBuilder(): GroupSeqBuilder<BhvrStmtSeq, BhvrPreStmt>(BhvrPreStmt::create, "}") {
+    
+}
+
+BhvrStmtSeq *BhvrStmtSeqBuilder::createGroupSeq(std::vector<BhvrPreStmt *> preStmts) {
+    return new BhvrStmtSeq(castPtrVector<BhvrPreStmt, BhvrStmt>(preStmts));
+}
+
+AttrStmtSeqBuilder::AttrStmtSeqBuilder(): GroupSeqBuilder<AttrStmtSeq, AttrPreStmt>(AttrPreStmt::create, "]") {
+    
+}
+
+AttrStmtSeq *AttrStmtSeqBuilder::createGroupSeq(std::vector<AttrPreStmt *> preStmts) {
+    return new AttrStmtSeq(castPtrVector<AttrPreStmt, AttrStmt>(preStmts));
 }
 
 
