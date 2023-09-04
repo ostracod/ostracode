@@ -1,5 +1,6 @@
 
 #include "utils.hpp"
+#include "error.hpp"
 #include "groupSeq.hpp"
 
 template <class T>
@@ -8,15 +9,15 @@ GroupSeq<T>::GroupSeq(GroupSeqType type, std::vector<T *> groups) {
     this->groups = groups;
 }
 
-ExprSeq::ExprSeq(GroupSeqType type, std::vector<Expr *> exprs): GroupSeq<Expr>(type, exprs) {
-    
+ExprSeq::ExprSeq(GroupSeqType type, bool hasFactorType, std::vector<Expr *> exprs): GroupSeq<Expr>(type, exprs) {
+    this->hasFactorType = hasFactorType;
 }
 
-PrepExprSeq::PrepExprSeq(std::vector<Expr *> exprs): ExprSeq(GroupSeqType::PrepExpr, exprs) {
-    
+PrepExprSeq::PrepExprSeq(bool hasFactorType, bool useConstraintTypes, std::vector<Expr *> exprs): ExprSeq(GroupSeqType::PrepExpr, hasFactorType, exprs) {
+    this->useConstraintTypes = useConstraintTypes;
 }
 
-FlowExprSeq::FlowExprSeq(std::vector<Expr *> exprs): ExprSeq(GroupSeqType::FlowExpr, exprs) {
+FlowExprSeq::FlowExprSeq(bool hasFactorType, std::vector<Expr *> exprs): ExprSeq(GroupSeqType::FlowExpr, hasFactorType, exprs) {
     
 }
 
@@ -39,25 +40,25 @@ GroupSeqBuilder<T1, T2>::GroupSeqBuilder(CreatePreGroup<T2> createPreGroup, std:
     this->closeBracketText = closeBracketText;
 }
 
-GroupSeqBuilder<> *createGroupSeqBuilder(std::string openBrackText) {
-    // TODO: Implement.
-    return NULL;
-}
-
-PrepExprSeqBuilder::PrepExprSeqBuilder(): GroupSeqBuilder<PrepExprSeq, PreExpr>(PreExpr::create, ">") {
-    
-}
-
-PrepExprSeq *PrepExprSeqBuilder::createGroupSeq(std::vector<PreExpr *> preExprs) {
-    return new PrepExprSeq(castPtrVector<PreExpr, Expr>(preExprs));
-}
-
-FlowExprSeqBuilder::FlowExprSeqBuilder(): GroupSeqBuilder<FlowExprSeq, PreExpr>(PreExpr::create, ")") {
-    
-}
-
-FlowExprSeq *FlowExprSeqBuilder::createGroupSeq(std::vector<PreExpr *> preExprs) {
-    return new FlowExprSeq(castPtrVector<PreExpr, Expr>(preExprs));
+GroupSeqBuilder<> *createGroupSeqBuilder(std::string openBracketText) {
+    char firstChar = openBracketText.at(0);
+    bool hasFactorType = (openBracketText.length() > 1 && openBracketText.at(2) == '*');
+    int charIndex = hasFactorType ? 2 : 1;
+    bool useConstraintTypes = (charIndex < openBracketText.length()
+        && openBracketText.at(charIndex) == '?');
+    if (firstChar == '{') {
+        // This is throwing a compilation error right now...
+        // C++ templates are a bit troublesome...
+        return static_cast<GroupSeqBuilder<> *>(new BhvrStmtSeqBuilder());
+    } else if (firstChar == '[') {
+        return new AttrStmtSeqBuilder();
+    } else if (firstChar == '<') {
+        return new PrepExprSeqBuilder(hasFactorType, useConstraintTypes);
+    } else if (firstChar == '(') {
+        return new FlowExprSeqBuilder(hasFactorType);
+    } else {
+        throw Error("Invalid open bracket \"" + openBracketText + "\".");
+    }
 }
 
 BhvrStmtSeqBuilder::BhvrStmtSeqBuilder(): GroupSeqBuilder<BhvrStmtSeq, BhvrPreStmt>(BhvrPreStmt::create, "}") {
@@ -74,6 +75,27 @@ AttrStmtSeqBuilder::AttrStmtSeqBuilder(): GroupSeqBuilder<AttrStmtSeq, AttrPreSt
 
 AttrStmtSeq *AttrStmtSeqBuilder::createGroupSeq(std::vector<AttrPreStmt *> preStmts) {
     return new AttrStmtSeq(castPtrVector<AttrPreStmt, AttrStmt>(preStmts));
+}
+
+template <class T>
+ExprSeqBuilder<T>::ExprSeqBuilder(bool hasFactorType, CreatePreGroup<PreExpr> createPreGroup, std::string closeBracketText): GroupSeqBuilder<T, PreExpr>(createPreGroup, closeBracketText) {
+    this->hasFactorType = hasFactorType;
+}
+
+PrepExprSeqBuilder::PrepExprSeqBuilder(bool hasFactorType, bool useConstraintTypes): ExprSeqBuilder<PrepExprSeq>(hasFactorType, PreExpr::create, ">") {
+    this->useConstraintTypes = useConstraintTypes;
+}
+
+PrepExprSeq *PrepExprSeqBuilder::createGroupSeq(std::vector<PreExpr *> preExprs) {
+    return new PrepExprSeq(this->hasFactorType, this->useConstraintTypes, castPtrVector<PreExpr, Expr>(preExprs));
+}
+
+FlowExprSeqBuilder::FlowExprSeqBuilder(bool hasFactorType): ExprSeqBuilder<FlowExprSeq>(hasFactorType, PreExpr::create, ")") {
+    
+}
+
+FlowExprSeq *FlowExprSeqBuilder::createGroupSeq(std::vector<PreExpr *> preExprs) {
+    return new FlowExprSeq(this->hasFactorType, castPtrVector<PreExpr, Expr>(preExprs));
 }
 
 

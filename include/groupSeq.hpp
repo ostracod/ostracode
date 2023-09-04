@@ -27,19 +27,23 @@ class GroupSeq {
 class ExprSeq: public GroupSeq<Expr> {
     public:
     
-    ExprSeq(GroupSeqType type, std::vector<Expr *> exprs);
+    bool hasFactorType;
+    
+    ExprSeq(GroupSeqType type, bool hasFactorType, std::vector<Expr *> exprs);
 };
 
 class PrepExprSeq: public ExprSeq {
     public:
     
-    PrepExprSeq(std::vector<Expr *> exprs);
+    bool useConstraintTypes;
+    
+    PrepExprSeq(bool hasFactorType, bool useConstraintTypes, std::vector<Expr *> exprs);
 };
 
 class FlowExprSeq: public ExprSeq {
     public:
     
-    FlowExprSeq(std::vector<Expr *> exprs);
+    FlowExprSeq(bool hasFactorType, std::vector<Expr *> exprs);
 };
 
 // `T` must conform to `Stmt`.
@@ -76,20 +80,6 @@ class GroupSeqBuilder {
 
 GroupSeqBuilder<> *createGroupSeqBuilder(std::string openBrackText);
 
-class PrepExprSeqBuilder: public GroupSeqBuilder<PrepExprSeq, PreExpr> {
-    public:
-    
-    PrepExprSeqBuilder();
-    PrepExprSeq *createGroupSeq(std::vector<PreExpr *> preExprs);
-};
-
-class FlowExprSeqBuilder: public GroupSeqBuilder<FlowExprSeq, PreExpr> {
-    public:
-    
-    FlowExprSeqBuilder();
-    FlowExprSeq *createGroupSeq(std::vector<PreExpr *> preExprs);
-};
-
 class BhvrStmtSeqBuilder: public GroupSeqBuilder<BhvrStmtSeq, BhvrPreStmt> {
     public:
     
@@ -102,6 +92,32 @@ class AttrStmtSeqBuilder: public GroupSeqBuilder<AttrStmtSeq, AttrPreStmt> {
     
     AttrStmtSeqBuilder();
     AttrStmtSeq *createGroupSeq(std::vector<AttrPreStmt *> preStmts);
+};
+
+// `T` must conform to `ExprSeq`.
+template <class T>
+class ExprSeqBuilder: public GroupSeqBuilder<T, PreExpr> {
+    public:
+    
+    bool hasFactorType;
+    
+    ExprSeqBuilder(bool hasFactorType, CreatePreGroup<PreExpr> createPreGroup, std::string closeBracketText);
+};
+
+class PrepExprSeqBuilder: public ExprSeqBuilder<PrepExprSeq> {
+    public:
+    
+    bool useConstraintTypes;
+    
+    PrepExprSeqBuilder(bool hasFactorType, bool useConstraintTypes);
+    PrepExprSeq *createGroupSeq(std::vector<PreExpr *> preExprs);
+};
+
+class FlowExprSeqBuilder: public ExprSeqBuilder<FlowExprSeq> {
+    public:
+    
+    FlowExprSeqBuilder(bool hasFactorType);
+    FlowExprSeq *createGroupSeq(std::vector<PreExpr *> preExprs);
 };
 
 #endif
